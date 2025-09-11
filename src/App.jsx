@@ -1,9 +1,9 @@
-import './App.css';
+import MainPage from './Layouts/MainPage/MainPage';
 
 function App() {
     return (
         <>
-            <h1>Jokes Generator</h1>
+            <MainPage />
         </>
     );
 }
