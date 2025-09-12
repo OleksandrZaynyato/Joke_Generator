@@ -1,0 +1,22 @@
+{
+  "name": "admin-panel",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ra-data-json-server": "^5.11.1",
+    "react-admin": "^5.11.1"
+  },
+  "devDependencies": {
+    "vite": "^7.1.2"
+  }
+}
