@@ -1,4 +1,4 @@
-import MainPage from './Layouts/MainPage/MainPage';
+import './App.css';
 
 function App() {
     return (
