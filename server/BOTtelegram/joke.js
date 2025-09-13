@@ -1,9 +1,14 @@
+
+
+
 const express = require('express');
 const mongoose = require('mongoose');
 const TelegramBot = require('node-telegram-bot-api');
 
 const app = express();
+
 const PORT = 3000;
+
 
 app.use(express.json());
 
@@ -103,7 +108,7 @@ app.get('/', (req, res) => {
           })
         });
         const result = await response.json();
-        // alert(result.message);
+          alert(result.message);
         e.target.reset();
       });
     </script>
