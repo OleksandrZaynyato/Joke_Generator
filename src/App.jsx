@@ -1,4 +1,5 @@
-import MainPage from './Layouts/MainPage/MainPage';
+import React from 'react';
+import MainPage from './Layouts/MainPage/MainPage.jsx';
 
 function App() {
     return (
