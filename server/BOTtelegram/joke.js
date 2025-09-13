@@ -26,6 +26,12 @@ const admin_id = '1795893529';
 const bot = new TelegramBot(token_bot, { polling: true });
 console.log('Bot started');
 
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, 'Бот запущений! Готовий до прийому жартів!');
+});
+
+
 app.post('/api/jokes', async (req, res) => {
   try {
     const { text, submittedBy } = req.body;
