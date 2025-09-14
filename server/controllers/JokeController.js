@@ -1,6 +1,6 @@
 import Joke from "../models/Joke.js";
 import {getBot} from "../bot/bot.js";
-import { get } from "mongoose";
+
 export async function getAllJokes(req, res) {
     try {
         const jokes = await Joke.find();
@@ -35,20 +35,17 @@ export async function createJoke(req, res) {
         const bot = await getBot();
 
         const adminChatId = process.env.ADMIN_CHAT_ID;
-        await bot.sendMessage(adminChatId, `🆕 New joke: \n\n${joke.text}`, {
+        await bot.sendMessage(adminChatId, `🆕 New joke:\n\n${joke.setup}\n${joke.punchline}`, {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        {
-                            text: "✅ Accept", callbackdata: `accept${joke._id.toString() }`
-                        },
-                        {
-                            text: "❌ Reject", callback_data: `reject_${joke._id.toString()}`
-                        }
+                        { text: "✅ Accept", callback_data: `accept_${joke._id.toString()}` },
+                        { text: "❌ Reject", callback_data: `reject_${joke._id.toString()}` }
                     ]
                 ]
             }
         });
+
 
         res.status(201).json(newJoke);
     } catch (error) {

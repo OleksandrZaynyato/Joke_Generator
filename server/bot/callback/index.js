@@ -1,3 +1,6 @@
+import acceptCallback from './accept.js';
+import rejectCallback from './reject.js';
+
 function hendleCallback(bot, callbackQuery) {
   
     const data = callbackQuery.data;

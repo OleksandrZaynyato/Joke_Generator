@@ -1,5 +1,6 @@
-import { Joke } from "../../models/Joke.js";
 import mongoose from "mongoose";
+
+import Joke from "../../models/Joke.js";
 
 export default async function acceptCallback(bot, callbackQuery) {
   try {
@@ -7,17 +8,17 @@ export default async function acceptCallback(bot, callbackQuery) {
     if (!message) return bot.answerCallbackQuery(callbackQuery.id, { text: "No message found" });
 
     // Дістаємо ID з callbackdata і перетворюємо в ObjectId
-    const jokeIdStr = callbackQuery.data.split("")[1];
+    const jokeIdStr = callbackQuery.data.split("_")[1];
     if (!mongoose.Types.ObjectId.isValid(jokeIdStr)) {
       return bot.answerCallbackQuery(callbackQuery.id, { text: "Invalid joke ID" });
     }
-    const jokeId = mongoose.Types.ObjectId(jokeIdStr);
+    const jokeId = new mongoose.Types.ObjectId(jokeIdStr);
 
     const chatId = message.chat.id;
     const messageId = message.message_id;
 
     // Оновлюємо документ
-    await Joke.findByIdAndUpdate(jokeId, { approved: true });
+    const updatedJoke = await Joke.findByIdAndUpdate(jokeId, { accepted: true, updatedAt: new Date() });
 
     // Редагуємо повідомлення в боті
     await bot.editMessageText("Joke ✅ ACCEPTED", {
