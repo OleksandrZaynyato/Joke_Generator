@@ -37,7 +37,7 @@ export default function MainPage() {
                         <p className="text-[28px] text-white flex  gap-[10px] break-words w-full line-clamp-3">
                             <span className="min-w-[14px] h-[14px] bg-white rounded-full inline-block mt-4"></span>
 
-                            {randomjoke.text}
+                            {randomjoke.setup}
                         </p>
                         <p className="text-[28px] text-[#F8D57E] flex gap-[10px]">
                             <span className="min-w-[14px] h-[14px] bg-[#F8D57E] rounded-full inline-block mt-4"></span>
