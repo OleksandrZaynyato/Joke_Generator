@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 
@@ -13,6 +12,14 @@ export default function MainPage() {
             </div>
             <Button bg={'bg-[#F8D57E]'}>Generate</Button>
             <Button bg={'bg-[#BFAFF2]'}>Add my Joke</Button>
+            
+            <a 
+                href="/admin"
+                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+                Перейти до адмінки
+            </a>
+            
             <Line />
         </div>
     );
