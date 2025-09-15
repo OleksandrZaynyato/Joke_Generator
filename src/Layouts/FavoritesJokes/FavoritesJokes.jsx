@@ -30,7 +30,7 @@ export default function FavoritesJokes() {
                         <div className="bg-[#313131] w-[500px] h-[300px] rounded-[20px] px-[26px] py-[18px] flex flex-col">
                             <p className="text-[28px] text-white flex  gap-[10px]" id="setup">
                                 <span className="min-w-[14px] h-[14px] bg-white rounded-full inline-block mt-4"></span>
-                                {joke.text}
+                                {joke.setup}
                             </p>
                             <p className="text-[28px] text-[#F8D57E] flex gap-[10px]" id="punchline">
                                 <span className="min-w-[14px] h-[14px] bg-[#F8D57E] rounded-full inline-block mt-4"></span>
