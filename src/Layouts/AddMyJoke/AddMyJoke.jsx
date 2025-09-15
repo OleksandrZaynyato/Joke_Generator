@@ -7,7 +7,7 @@ import Button from '../../UI/Button/Button';
 export default function AddMyJoke() {
     const sendMyJoke = async (joke) => {
         try {
-            const response = await fetch('http://localhost:3000/api/myjoke', {
+            const response = await fetch('http://localhost:3000/api/jokes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(joke),
