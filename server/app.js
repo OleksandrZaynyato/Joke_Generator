@@ -4,6 +4,9 @@ import cors from 'cors';
 
 import {connectDB} from './config/DB.js';
 import jokeRoutes from "./routes/jokeRoutes.js";
+import { initBot } from './bot/bot.js';
+
+
 
 const app = express();
 
@@ -20,9 +23,7 @@ connectDB();
 
 app.use('/api/jokes', jokeRoutes);
 
-// const jokeRouter = express.Router();
-// JokeRoutes(jokeRouter, JokeController);
-// app.use('/jokes', jokeRouter);
+initBot();
 
 
 
