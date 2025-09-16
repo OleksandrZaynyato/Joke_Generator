@@ -27,13 +27,17 @@ export default function FavoritesJokes() {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-15 justify-items-center">
                 {favoriteJokes.map((joke) => (
                     <div key={joke._id} className="flex flex-col items-center gap-4">
-                        <div className="bg-[#313131] w-[500px] h-[300px] rounded-[20px] px-[26px] py-[18px] flex flex-col">
-                            <p className="text-[28px] text-white flex  gap-[10px]" id="setup">
-                                <span className="min-w-[14px] h-[14px] bg-white rounded-full inline-block mt-4"></span>
-                                {joke.text}
+                        <div className="bg-[#313131] w-[300px] sm:min-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[300px] rounded-[20px] px-[26px] py-[18px] flex flex-col">
+                            <p
+                                className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] xl:text-[28px] text-white flex  gap-[10px]"
+                                id="setup">
+                                <span className="min-w-[9px] h-[9px] bg-white rounded-full inline-block  mt-2 lg:mt-4 sm:min-w-[10px] sm:h-[10px] md:min-w-[12px] md:h-[12px] lg:min-w-[14px] lg:h-[14px]"></span>
+                                {joke.setup}
                             </p>
-                            <p className="text-[28px] text-[#F8D57E] flex gap-[10px]" id="punchline">
-                                <span className="min-w-[14px] h-[14px] bg-[#F8D57E] rounded-full inline-block mt-4"></span>
+                            <p
+                                className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] xl:text-[28px] text-[#F8D57E] flex gap-[10px]"
+                                id="punchline">
+                                <span className="min-w-[9px] h-[9px] bg-[#F8D57E] rounded-full inline-block  mt-2 lg:mt-4 sm:min-w-[10px] sm:h-[10px] md:min-w-[12px] md:h-[12px] lg:min-w-[14px] lg:h-[14px]"></span>
                                 {joke.punchline}
                             </p>
                         </div>
