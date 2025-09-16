@@ -1,4 +1,4 @@
-import AdminPanel from './Layouts/AdminPanel/AdminPanel';
+import AdminApp from "./admin/AdminApp.jsx";
 import MainPage from './Layouts/MainPage/MainPage';
 import AddMyJoke from './Layouts/AddMyJoke/AddMyJoke';
 import FavoritesJokes from './Layouts/FavoritesJokes/FavoritesJokes';
@@ -12,7 +12,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<MainPage />} />
                     <Route path="/add-joke" element={<AddMyJoke />} />
-                    <Route path="/admin" element={<AdminPanel />} />
+                    <Route path="/admin/*" element={<AdminApp />} />
                     <Route path="/favorites" element={<FavoritesJokes />} />
                 </Routes>
             </BrowserRouter>
