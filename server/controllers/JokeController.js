@@ -26,6 +26,18 @@ export async function getRandomJoke(req, res) {
     }
 }
 
+export async function getJokeById(req, res) {
+    try {
+        const joke = await Joke.findById(req.params.id);
+        if (!joke) {
+            return res.status(404).json({ message: "Joke not found" });
+        }
+        res.json(joke);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 export async function createJoke(req, res) {
     const { setup, punchline } = req.body;
     const joke = new Joke({ setup, punchline });
@@ -52,3 +64,4 @@ export async function createJoke(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
+
