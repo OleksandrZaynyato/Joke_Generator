@@ -1,5 +1,5 @@
-import Joke from "../models/Joke.js";
-import {getBot} from "../bot/bot.js";
+import Joke from '../models/Joke.js';
+import { getBot } from '../bot/bot.js';
 
 export async function getAllJokes(req, res) {
     try {
@@ -12,23 +12,27 @@ export async function getAllJokes(req, res) {
 
 export async function getRandomJoke(req, res) {
     try {
-        const [joke] = await Joke.aggregate([
-            { $match: { accepted: true } },
-            { $sample: { size: 1 } }
-        ]);
+        const [joke] = await Joke.aggregate([{ $match: { accepted: true } }, { $sample: { size: 1 } }]);
 
         if (!joke) {
-            return res.status(404).json({ message: "No accepted jokes found" });
+            return res.status(404).json({ message: 'No accepted jokes found' });
         }
         res.json(joke);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> 08e60fa20c3e9f7282095f0354b5b88448df0532
+}
+
+export async function getJokeById(req, res) {
+    try {
+        const joke = await Joke.findById(req.params.id);
+        if (!joke) {
+            return res.status(404).json({ message: 'Joke not found' });
+        }
+        res.json(joke);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
 
 export async function createJoke(req, res) {
@@ -44,20 +48,15 @@ export async function createJoke(req, res) {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "✅ Accept", callback_data: `accept_${joke._id.toString()}` },
-                        { text: "❌ Reject", callback_data: `reject_${joke._id.toString()}` }
-                    ]
-                ]
-            }
+                        { text: '✅ Accept', callback_data: `accept_${joke._id.toString()}` },
+                        { text: '❌ Reject', callback_data: `reject_${joke._id.toString()}` },
+                    ],
+                ],
+            },
         });
-
 
         res.status(201).json(newJoke);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 08e60fa20c3e9f7282095f0354b5b88448df0532
 }
