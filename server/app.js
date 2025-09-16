@@ -1,46 +1,49 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-}));
+// CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+  next();
+});
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://admin:creator12341234@cluster0.4gzdple.mongodb.net/Jokes?retryWrites=true&w=majority&appName=Cluster0')
-  .then(() => console.log('✅ MongoDB connected successfully'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+mongoose.connect('mongodb+srv://admin:creator12341234@cluster0.4gzdple.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0')
+  .then(() => console.log('✅ MongoDB connected to test database'))
+  .catch(err => console.error('❌ MongoDB error:', err));
 
-// Отримати всі жарти з MongoDB колекції Jokes
 app.get('/api/jokes', async (req, res) => {
   try {
     const db = mongoose.connection.db;
-    
-    // Отримуємо реальні дані з колекції Jokes
     const jokes = await db.collection('Jokes').find().toArray();
-    console.log('📊 Знайдено жартів в базі даних:', jokes.length);
     
-    // Форматуємо дані для React Admin
-    const formattedJokes = jokes.map((joke) => ({
-      id: joke._id.toString(), // Використовуємо реальний ObjectId
-      title: joke.setup || "Жарт без назви",
-      content: joke.punchline || "Текст жарту відсутній",
-      category: joke.category || "Загальні",
+    console.log('📊 Знайдено жартів в test.Jokes:', jokes.length);
+
+    // Форматуємо дані
+    const formattedJokes = jokes.map(joke => ({
+      id: joke._id.toString(),
+      title: joke.setup || "Без назви",
+      content: joke.punchline || "Без змісту", 
+      category: "General",
       likes: joke.likes || 0,
+      accepted: joke.accepted || false,
+      submittedBy: joke.submittedBy || "Невідомо",
       createdAt: joke.createdAt || new Date()
     }));
-    
+
+    res.header('X-Total-Count', jokes.length.toString());
     res.json(formattedJokes);
+    
   } catch (error) {
-    console.error('❌ Помилка отримання жартів з MongoDB:', error);
-    res.status(500).json({ error: 'Помилка сервера' });
+    console.error('❌ Error:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Сервер запущено на http://localhost:${PORT}`);
+  console.log(`🚀 Server running: http://localhost:${PORT}`);
 });
