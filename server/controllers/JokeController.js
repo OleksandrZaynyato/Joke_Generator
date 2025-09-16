@@ -12,13 +12,23 @@ export async function getAllJokes(req, res) {
 
 export async function getRandomJoke(req, res) {
     try {
-        const [joke] = await Joke.aggregate([{ $sample: { size: 1 } }]);
+        const [joke] = await Joke.aggregate([
+            { $match: { accepted: true } },
+            { $sample: { size: 1 } }
+        ]);
+
+        if (!joke) {
+            return res.status(404).json({ message: "No accepted jokes found" });
+        }
         res.json(joke);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 08e60fa20c3e9f7282095f0354b5b88448df0532
 }
 
 export async function createJoke(req, res) {
@@ -46,5 +56,8 @@ export async function createJoke(req, res) {
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 08e60fa20c3e9f7282095f0354b5b88448df0532
 }
