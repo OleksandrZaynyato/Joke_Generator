@@ -4,14 +4,14 @@ import cors from 'cors';
 
 import {connectDB} from './config/DB.js';
 import jokeRoutes from "./routes/jokeRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import { initBot } from './bot/bot.js';
-import mongoose from "mongoose";
 
 
 
 const app = express();
 
-app.use(cors());
+app.use(cors({credentials: true, origin: "http://localhost:3000" }));
 
 // CORS
 app.use((req, res, next) => {
@@ -31,6 +31,7 @@ app.use(express.json());
 await connectDB();
 
 app.use('/api/jokes', jokeRoutes);
+app.use('/api/user', userRoutes);
 
 initBot();
 
