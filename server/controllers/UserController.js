@@ -22,7 +22,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { loginValue, password } = await req.body;
+        const { username="", email="", password } = await req.body;
+
+        const loginValue = email || username;
 
         const user = await getUserByEmailOrNameRep(loginValue);
         if (!user) return res.status(401).json({ error: 'Invalid email or password' });

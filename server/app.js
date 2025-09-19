@@ -11,7 +11,7 @@ import { initBot } from './bot/bot.js';
 
 const app = express();
 
-app.use(cors({credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({credentials: true, origin: "http://localhost:5173" }));
 
 // CORS
 app.use((req, res, next) => {
