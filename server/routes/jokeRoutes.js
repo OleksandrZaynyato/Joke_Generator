@@ -6,7 +6,7 @@ import {
     createJoke,
     updateJoke,
     deleteJoke
-} from '../controllers/jokeController.js';
+} from '../controllers/JokeController.js';
 
 const router = Router();
 
