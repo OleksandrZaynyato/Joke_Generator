@@ -7,8 +7,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import { connectDB } from './config/DB.js';
-import jokeRoutes from "./routes/jokeRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
+import jokeRoutes from "./routes/JokeRoutes.js";
+import userRoutes from "./routes/UserRoutes.js";
 import { initBot } from './bot/bot.js';
 
 const __filename = fileURLToPath(import.meta.url);
