@@ -11,6 +11,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MainPage />} />
+                    <Route path="/:id" element={<MainPage />} />
                     <Route path="/add-joke" element={<AddMyJoke />} />
                     <Route path="/admin" element={<AdminPanel />} />
                     <Route path="/favorites" element={<FavoritesJokes />} />

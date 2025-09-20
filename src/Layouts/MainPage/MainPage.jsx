@@ -1,21 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { Star } from 'lucide-react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 
 export default function MainPage() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [randomjoke, setRandomjoke] = React.useState(null);
     const [favoriteJokes, setFavoriteJokes] = React.useState(() => {
         const saved = localStorage.getItem('favoriteJokes');
         return saved ? JSON.parse(saved) : [];
     });
     const [likeJoke, setLikeJoke] = React.useState(false);
+    const [showLikeButton, setShowLikeButton] = React.useState(false);
 
-    React.useEffect(() => {
-        localStorage.setItem('favoriteJokes', JSON.stringify(favoriteJokes));
-    }, [favoriteJokes]);
+    async function getJokeById(jokeId) {
+        const response = await fetch(`http://localhost:3000/api/jokes/${jokeId}`);
+        const data = await response.json();
+        setRandomjoke(data);
+        setLikeJoke(favoriteJokes.some((j) => j._id === data._id));
+    }
 
     async function getRandomJoke() {
         const response = await fetch('http://localhost:3000/api/jokes/random');
@@ -23,8 +30,29 @@ export default function MainPage() {
         setRandomjoke(data);
 
         setLikeJoke(favoriteJokes.some((j) => j._id === data._id));
+        navigate(`/${data._id}`);
     }
-    const [showLikeButton, setShowLikeButton] = React.useState(false);
+
+    function toggleFavorite(joke) {
+        setFavoriteJokes((prev) => {
+            const exists = prev.find((j) => j._id === joke._id);
+            return exists ? prev.filter((j) => j._id !== joke._id) : [...prev, joke];
+        });
+        setLikeJoke((prev) => !prev);
+    }
+
+    React.useEffect(() => {
+        localStorage.setItem('favoriteJokes', JSON.stringify(favoriteJokes));
+    }, [favoriteJokes]);
+
+    React.useEffect(() => {
+        if (id) {
+            getJokeById(id);
+            setShowLikeButton(true);
+        } else {
+            setShowLikeButton(false);
+        }
+    }, [id]);
 
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
@@ -57,17 +85,7 @@ export default function MainPage() {
                             color="#EDF26D"
                             fill={likeJoke ? '#EDF26D' : 'none'}
                             className="cursor-pointer"
-                            onClick={() => {
-                                setFavoriteJokes((prev) => {
-                                    const exists = prev.find((j) => j._id === randomjoke._id);
-                                    if (exists) {
-                                        return prev.filter((j) => j._id !== randomjoke._id);
-                                    } else {
-                                        return [...prev, randomjoke];
-                                    }
-                                });
-                                setLikeJoke((prev) => !prev);
-                            }}
+                            onClick={() => toggleFavorite(randomjoke)}
                         />
                     </div>
                 )}
