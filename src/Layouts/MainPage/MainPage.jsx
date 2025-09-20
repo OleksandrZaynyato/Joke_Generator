@@ -9,6 +9,8 @@ export default function MainPage() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const API_URL =  import.meta.env.VITE_API_URL;
+
     const [randomjoke, setRandomjoke] = React.useState(null);
     const [favoriteJokes, setFavoriteJokes] = React.useState(() => {
         const saved = localStorage.getItem('favoriteJokes');
@@ -18,14 +20,14 @@ export default function MainPage() {
     const [showLikeButton, setShowLikeButton] = React.useState(false);
 
     async function getJokeById(jokeId) {
-        const response = await fetch(`http://localhost:3000/api/jokes/${jokeId}`);
+        const response = await fetch(`${API_URL}/jokes/${jokeId}`);
         const data = await response.json();
         setRandomjoke(data);
         setLikeJoke(favoriteJokes.some((j) => j._id === data._id));
     }
 
     async function getRandomJoke() {
-        const response = await fetch('http://localhost:3000/api/jokes/random');
+        const response = await fetch(`${API_URL}/jokes/random`);
         const data = await response.json();
         setRandomjoke(data);
 

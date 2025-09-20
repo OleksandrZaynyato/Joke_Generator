@@ -5,9 +5,11 @@ import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 
 export default function AddMyJoke() {
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const sendMyJoke = async (joke) => {
         try {
-            const response = await fetch('http://localhost:3000/api/jokes', {
+            const response = await fetch(`${API_URL}/jokes`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(joke),
