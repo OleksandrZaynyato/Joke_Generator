@@ -48,7 +48,7 @@ export async function getJokeById(req, res) {
 
         const formattedJoke = {
             id: joke._id.toString(),
-            ...joke
+            ...joke.toObject(),
         };
         res.json(formattedJoke);
     } catch (error) {
