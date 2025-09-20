@@ -8,7 +8,7 @@ import {
     getUserById,
     getUserByEmailAndName,
     updateUser
-} from '../controllers/userController.js';
+} from '../controllers/UserController.js';
 import {authAdmin} from "../middlewares/authAdmin.js";
 
 const router = Router();
