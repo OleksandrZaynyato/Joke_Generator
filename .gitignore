@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 
-server/.env
+.env
 
 # Editor directories and files
 .vscode/*
@@ -25,7 +25,7 @@ server/.env
 *.sln
 *.sw?
 ### dotenv template
-.env
+client/.env
 
 ### Node template
 # Logs
@@ -103,7 +103,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
+client/.env
 .env.development.local
 .env.test.local
 .env.production.local
