@@ -74,34 +74,44 @@
 
 ```bash
 git clone https://github.com/yourusername/random-joke-generator.git
+```
 
 2. Встановити залежності:
+
+```bash
 # Для фронтенду
 npm install
 
 # Для бекенду
 cd server
 npm install
+```
 
 3. Налаштувати .env файл для бекенду:
 
+```bash
 MONGO_URI=your_mongodb_connection_string
 TOKENBOT=your_telegram_bot_token
 ADMIN_CHAT_ID=your_admin_password
 JWT_SECRET=your_jwt_secret
 API_URL=http://your_domain:port/api
 PORT=server_port
+```
 
-3. Налаштувати .env файл для фронтенду:
+4. Налаштувати .env файл для фронтенду:
 
+```bash
 VITE_API_URL=http://your_domain:port/api
+```
 
 5. Запуск проекту:
 
+```bash
 # Запуск фронтенду
 npm run dev
 
 # Запуск бекенду
 cd server
 npm run dev
+
 ```
