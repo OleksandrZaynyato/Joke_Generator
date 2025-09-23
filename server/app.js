@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config();  // <-- першим рядком
+dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
@@ -17,7 +17,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
+// app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL && "http://localhost:5173" }));
+// For local development, you might want to allow all origins. Adjust in production.
+app.use(cors({ credentials: true, origin: true }));
 
 app.use(express.json());
 
@@ -30,7 +32,7 @@ app.use('/api/user', userRoutes);
 
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
-app.get("*", (req, res) => {
+app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 

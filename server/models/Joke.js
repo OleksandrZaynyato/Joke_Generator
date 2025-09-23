@@ -10,6 +10,10 @@ const jokeSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        rating: {
+          type: Number,
+            default: 0,
+        },
         accepted: {
             type: Boolean,
             default: false,
@@ -22,8 +26,10 @@ const jokeSchema = new mongoose.Schema(
             type: Date,
             default: null
         },
-        submittedBy: {
-            type: String, // Could be user ID or username
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: false,
             default: null,
         },
 

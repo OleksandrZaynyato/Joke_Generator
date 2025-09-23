@@ -1,5 +1,7 @@
 import Joke from '../models/Joke.js';
 import { getBot } from '../bot/bot.js';
+import {validate} from "../middlewares/validate.js";
+import {createJokeSchema} from "../validators/joke/jokeCreateValidator.js";
 
 export async function getAllJokes(req, res) {
     try {
@@ -20,7 +22,7 @@ export async function getAllJokes(req, res) {
 
         res.header('X-Total-Count', jokes.length.toString());
         res.json(formattedJokes);
-        // res.json(jokes);
+        // res.json(joke);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -31,7 +33,7 @@ export async function getRandomJoke(req, res) {
         const [joke] = await Joke.aggregate([{ $match: { accepted: true } }, { $sample: { size: 1 } }]);
 
         if (!joke) {
-            return res.status(404).json({ message: 'No accepted jokes found' });
+            return res.status(404).json({ message: 'No accepted joke found' });
         }
         res.json(joke);
     } catch (error) {
@@ -58,6 +60,9 @@ export async function getJokeById(req, res) {
 
 export async function createJoke(req, res) {
     const { setup, punchline } = req.body;
+
+    // createJokeSchema.validateSync({ setup, punchline })
+
     const joke = new Joke({ setup, punchline });
     try {
         const newJoke = await joke.save();
