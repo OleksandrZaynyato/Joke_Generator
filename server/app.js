@@ -17,7 +17,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
+app.use(cors({ 
+    credentials: true,
+    origin: [
+        "http://localhost:5173",
+        "https://joke-generator-nlfs.onrender.com",
+        process.env.FRONTEND_URL || "http://localhost:5173"] }));
 
 app.use(express.json());
 
