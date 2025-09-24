@@ -37,7 +37,7 @@ app.get(/^(?!\/api).*/, (req, res) => {
 });
 
 // Init Telegram bot
-initBot();
+// initBot();
 
 // Start server
 const PORT = process.env.PORT || 3000;

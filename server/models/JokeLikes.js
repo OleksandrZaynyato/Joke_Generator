@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const jokeLikeSchema = new mongoose.Schema(
+const jokeVoteSchema = new mongoose.Schema(
     {
         jokeId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -16,12 +16,14 @@ const jokeLikeSchema = new mongoose.Schema(
             type: String, // Store user IP address
             required: true,
         },
-        likedAt: {
+        votedAt: {
             type: Date,
             default: Date.now,
         },
     },
     {
-        collection: "JokeLikes",
+        collection: "JokeVotes",
     }
 );
+
+export default mongoose.model("JokeVotes", jokeVoteSchema);

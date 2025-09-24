@@ -3,17 +3,20 @@ import yup from 'yup';
 export function validate(schema) {
     return async (req, res, next) => {
         try {
-            const validatedData = await schema.validate(req.body, { abortEarly: false, stripUnknown: true });
-            req.body = validatedData; // Replace req.body with the validated data
+            const validated = await schema.validate(
+                { body: req.body, params: req.params, query: req.query },
+                { abortEarly: false, stripUnknown: true }
+            );
+
+            if (validated.body) req.body = validated.body;
+            if (validated.params) req.params = validated.params;
+            if (validated.query) req.query = validated.query;
+
             next();
-        } catch (error) {
-            if (error instanceof yup.ValidationError) {
-                return res.status(400).json({
-                    message: 'Validation Error',
-                    errors: error.errors,
-                });
-            }
-            next(error); // Pass other errors to the error handler
+        } catch (err) {
+            console.error('Validation error:', err);
+            return res.status(400).json({ message: 'Validation error', errors: err.errors });
         }
     };
 }
+
