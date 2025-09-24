@@ -1,0 +1,78 @@
+import React, { use, useState } from 'react';
+import { User, Mail, LockKeyhole } from 'lucide-react';
+
+import Line from '../../UI/Line/Line';
+import Button from '../../UI/Button/Button';
+import { email } from 'react-admin';
+
+export default function LoginPage() {
+    async function sendUserData() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: userNameOrEmail,
+                    email: userNameOrEmail,
+                    password,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Login response:', data);
+
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+            }
+
+            setUserNameOrEmail('');
+            setPassword('');
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    }
+
+    const [userNameOrEmail, setUserNameOrEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    return (
+        <div className="flex flex-col items-center justify-between gap-[50px] h-screen bg-[#2B2B2B]">
+            <Line />
+            <h1 className="text-[60px] font-bold text-white">Login</h1>
+            <div className="bg-[#313131] w-[25%] min-w-[410px] h-[300   px] rounded-[20px] flex flex-col items-center justify-center gap-[27px] px-[23px] py-[32px]">
+                <div className="bg-[#2B2B2B] w-full min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
+                    <User />
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        className="placeholder:text-white outline-none w-full"
+                        onChange={(e) => setUserNameOrEmail(e.target.value)}
+                        value={userNameOrEmail}
+                    />
+                </div>
+                <div className="bg-[#2B2B2B] w-full min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
+                    <LockKeyhole />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        className="placeholder:text-white outline-none w-full"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                    />
+                </div>
+            </div>
+            <div className="flex gap-[35px]">
+                <Button bg={'bg-[#F8D57E]'} onClick={sendUserData}>
+                    Login
+                </Button>
+            </div>
+            <Line />
+        </div>
+    );
+}
