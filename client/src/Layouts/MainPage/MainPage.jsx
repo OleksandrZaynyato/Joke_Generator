@@ -1,4 +1,5 @@
 import React from 'react';
+import { Star } from 'lucide-react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import Line from '../../UI/Line/Line';
@@ -9,23 +10,25 @@ export default function MainPage() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const [randomjoke, setRandomjoke] = React.useState(null);
-    const [likeJoke, setLikeJoke] = React.useState(false);
-    const [showLikeButton, setShowLikeButton] = React.useState(false);
     const [favoriteJokes, setFavoriteJokes] = React.useState(() => {
         const saved = localStorage.getItem('favoriteJokes');
         return saved ? JSON.parse(saved) : [];
     });
+    const [likeJoke, setLikeJoke] = React.useState(false);
+    const [showLikeButton, setShowLikeButton] = React.useState(false);
 
     async function getJokeById(jokeId) {
-        const response = await fetch(`http://localhost:3000/api/jokes/${jokeId}`);
+        const response = await fetch(`${API_URL}/jokes/${jokeId}`);
         const data = await response.json();
         setRandomjoke(data);
         setLikeJoke(favoriteJokes.some((j) => j._id === data._id));
     }
 
     async function getRandomJoke() {
-        const response = await fetch('http://localhost:3000/api/jokes/random');
+        const response = await fetch(`${API_URL}/jokes/random`);
         const data = await response.json();
         setRandomjoke(data);
 
@@ -84,6 +87,13 @@ export default function MainPage() {
                 <Link to={'/favorites'}>
                     <Button bg="bg-[#A8F38D]">Favorites</Button>
                 </Link>
+
+                {/*<a*/}
+                {/*    href="/admin"*/}
+                {/*    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"*/}
+                {/*>*/}
+                {/*    Перейти до адмінки*/}
+                {/*</a>*/}
             </div>
             <Line />
         </div>
