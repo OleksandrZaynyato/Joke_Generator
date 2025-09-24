@@ -87,7 +87,9 @@ export default function Popup() {
             </div>
             <div className="flex items-center justify-center">
                 <div className="bg-[#1D1D1D] border-[1px] border-[#484848] rounded-[15px] w-[95%] flex items-center justify-between px-[8px] gap-3 h-[70px] mb-8">
-                    <p className="text-[18px] text-white">http://localhost:5173/{id}</p>
+                    <p className="text-[18px] text-white truncate">
+                        {import.meta.env.VITE_FRONTEND_URL}/{id}
+                    </p>
                     <Button bg={'bg-[#F8D57E]'} onClick={handleCopy}>
                         {copied ? 'Copied!' : 'Copy'}
                     </Button>
