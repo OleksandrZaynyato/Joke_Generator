@@ -1,6 +1,6 @@
 import Joke from "../models/Joke.js";
 import mongoose from "mongoose";
-import JokeLikes from "../models/JokeLikes.js";
+import JokeVotes from "../models/JokeVotes.js";
 
 // Отримати всі жарти
 export async function getAllJokesService() {
@@ -52,27 +52,40 @@ export async function voteJokeService(jokeId, userId, action, ip) {
     const joke = await Joke.findById(jokeId);
     if (!joke) throw new Error("Joke not found");
 
-    const isJokeVotedByUser = await JokeLikes.find({ jokeId, IP: ip });
-    if (isJokeVotedByUser.length > 0 && isJokeVotedByUser[0] === action){
-        throw new Error("You have already voted for this joke");
-    };
+    let vote = await JokeVotes.findOne({ jokeId, IP: ip });
 
-    if (action === "like") {
-        joke.rating += 1;
-    } else if (action === "dislike") {
-        joke.rating -= 1;
+    // 1. If vote exists and is the same → delete
+    if (vote && vote.action === action) {
+        await JokeVotes.findByIdAndDelete(vote._id);
+        action === "like" ? joke.rating -= 1 : joke.rating += 1;
+
+        await joke.save();
+        return { message: `${action} was deleted successfully.`, joke, jokeVote: null };
     }
 
-    const likeData = {
+    // 2. If vote exists and is different → update
+    if (vote && vote.action !== action) {
+        vote.action = action;
+        vote.votedAt = new Date();
+        action === "like" ? joke.rating += 2 : joke.rating -= 2;
+
+        await vote.save();
+        await joke.save();
+        return { message: `Vote was changed to ${action}.`, joke, jokeVote: vote };
+    }
+
+    // 3. If no vote exists → create
+    const newVote = new JokeVotes({
         jokeId,
         userId: userId || null,
         IP: ip,
-    };
+        action,
+    });
 
-    const jokeLike = new JokeLikes(likeData);
+    action === "like" ? joke.rating += 1 : joke.rating -= 1;
 
-    await jokeLike.save();
+    await newVote.save();
     await joke.save();
 
-    return { joke, jokeLike };
+    return { message: `Joke was ${action}d successfully.`, joke, jokeVote: newVote };
 }

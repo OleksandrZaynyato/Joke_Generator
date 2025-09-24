@@ -20,6 +20,11 @@ const jokeVoteSchema = new mongoose.Schema(
             type: Date,
             default: Date.now,
         },
+        action: {
+            type: String,
+            enum: ["like", "dislike"],
+            required: true,
+        }
     },
     {
         collection: "JokeVotes",

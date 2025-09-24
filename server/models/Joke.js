@@ -32,7 +32,6 @@ const jokeSchema = new mongoose.Schema(
             required: false,
             default: null,
         },
-
     },
     {
         collection: "Jokes",

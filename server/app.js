@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import path from "path";
 import { fileURLToPath } from "url";
+import { swaggerUi, swaggerDocument } from './swagger/swagger.js';
 
 import { connectDB } from './config/DB.js';
 import jokeRoutes from "./routes/jokeRoutes.js";
@@ -29,6 +30,9 @@ await connectDB();
 // Routes
 app.use('/api/jokes', jokeRoutes);
 app.use('/api/user', userRoutes);
+
+// Swagger setup
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
