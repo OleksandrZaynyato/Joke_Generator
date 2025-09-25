@@ -1,11 +1,14 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import { User, Mail, LockKeyhole } from 'lucide-react';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
-import { email } from 'react-admin';
-
+import { useAuthStore } from '../../Store/useAuthStore';
+import { useNavigate } from 'react-router';
 export default function LoginPage() {
+    const { setUser } = useAuthStore();
+    const navigate = useNavigate();
+
     async function sendUserData() {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
@@ -29,10 +32,14 @@ export default function LoginPage() {
 
             if (data.token) {
                 localStorage.setItem('token', data.token);
-            }
+                localStorage.setItem('userId', data.user.id);
 
-            setUserNameOrEmail('');
-            setPassword('');
+                setUser(data.user);
+                setUserNameOrEmail('');
+                setPassword('');
+
+                navigate('/');
+            }
         } catch (error) {
             console.error('Login failed:', error);
         }
@@ -42,7 +49,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
 
     return (
-        <div className="flex flex-col items-center justify-between gap-[50px] h-screen bg-[#2B2B2B]">
+        <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
             <Line />
             <h1 className="text-[60px] font-bold text-white">Login</h1>
             <div className="bg-[#313131] w-[25%] min-w-[410px] h-[300   px] rounded-[20px] flex flex-col items-center justify-center gap-[27px] px-[23px] py-[32px]">
@@ -67,9 +74,12 @@ export default function LoginPage() {
                     />
                 </div>
             </div>
-            <div className="flex gap-[35px]">
+            <div className="flex flex-col items-center gap-[35px]">
                 <Button bg={'bg-[#F8D57E]'} onClick={sendUserData}>
                     Login
+                </Button>
+                <Button bg={'bg-[#BFAFF2]'} onClick={() => navigate('/')}>
+                    Back
                 </Button>
             </div>
             <Line />

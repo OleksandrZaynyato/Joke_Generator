@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { User, Mail, LockKeyhole } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 
 export default function RegisterPage() {
+    const navigate = useNavigate();
+
     async function sendUserData() {
         try {
             if (!userName || !email || !password) {
@@ -31,15 +34,17 @@ export default function RegisterPage() {
             const data = await response.json();
             console.log('Login response:', data);
 
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-            }
+            if (data.user.id) {
+                localStorage.setItem('userId', data.user.id);
 
-            setUserName('');
-            setEmail('');
-            setPassword('');
+                setUserName('');
+                setEmail('');
+                setPassword('');
+
+                navigate('/login');
+            }
         } catch (error) {
-            console.error('Login failed:', error);
+            console.error('Registration failed:', error);
         }
     }
 
@@ -48,7 +53,7 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
 
     return (
-        <div className="flex flex-col items-center justify-between gap-[50px] h-screen bg-[#2B2B2B]">
+        <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
             <Line />
             <h1 className="text-[60px] font-bold text-white">Registration</h1>
             <div className="bg-[#313131] w-[25%] min-w-[410px] h-[300   px] rounded-[20px] flex flex-col items-center justify-center gap-[27px] px-[23px] py-[32px]">
@@ -83,9 +88,12 @@ export default function RegisterPage() {
                     />
                 </div>
             </div>
-            <div className="flex gap-[35px]">
+            <div className="flex flex-col items-center gap-[35px]">
                 <Button bg={'bg-[#F8D57E]'} onClick={sendUserData}>
                     Register
+                </Button>
+                <Button bg={'bg-[#BFAFF2]'} onClick={() => navigate('/')}>
+                    Back
                 </Button>
             </div>
             <Line />

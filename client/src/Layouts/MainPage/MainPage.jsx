@@ -1,12 +1,15 @@
 import React from 'react';
-import { Star } from 'lucide-react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 import JokeTemplate from '../../UI/JokeTemplate/JokeTemplate';
+import { useAuthStore } from '../../Store/useAuthStore';
 
 export default function MainPage() {
+    //& constants
+    const { setUser, user } = useAuthStore();
+
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -20,6 +23,9 @@ export default function MainPage() {
     const [likeJoke, setLikeJoke] = React.useState(false);
     const [showLikeButton, setShowLikeButton] = React.useState(false);
 
+    //
+
+    //? functions
     async function getJokeById(jokeId) {
         const response = await fetch(`${API_URL}/jokes/${jokeId}`);
         const data = await response.json();
@@ -44,6 +50,32 @@ export default function MainPage() {
         setLikeJoke((prev) => !prev);
     }
 
+    async function handleLogout() {
+        try {
+            const confirmLogout = window.confirm('Confirm logout?');
+            if (!confirmLogout) return;
+
+            const response = await fetch(`${API_URL}/user/logout`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            setUser(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+            alert('Не вдалося вийти. Спробуйте ще раз.');
+        }
+    }
+
+    //
+
+    //^ side effects
     React.useEffect(() => {
         localStorage.setItem('favoriteJokes', JSON.stringify(favoriteJokes));
     }, [favoriteJokes]);
@@ -57,8 +89,44 @@ export default function MainPage() {
         }
     }, [id]);
 
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        if (token && userId) {
+            fetch(`${API_URL}/user/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+                cache: 'no-store',
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setUser(data.safeUser);
+                })
+                .catch(console.error);
+        }
+    }, []);
+
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
+            <div className="flex gap-[30px] items-center sm:flex-row flex-col absolute top-6 right-[10%]">
+                {user ? (
+                    <>
+                        <Button bg="bg-[#F8D57E]" onClick={handleLogout}>
+                            Logout
+                        </Button>
+                        <h2 className="text-[28px] font-bold text-white">{user.username}</h2>
+                    </>
+                ) : (
+                    <>
+                        <Button bg="bg-[#F8D57E]" onClick={() => navigate('/login')}>
+                            Login
+                        </Button>
+                        <Button bg="bg-[#BFAFF2]" onClick={() => navigate('/register')}>
+                            Register
+                        </Button>
+                    </>
+                )}
+            </div>
             <Line />
             <h1 className="text-[30px] sm:text-[40px] md:text-[50px] lg:text-[60px] font-bold text-white text-center">
                 Jokes Generator
