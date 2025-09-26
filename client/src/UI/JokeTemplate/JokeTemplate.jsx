@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Star, Forward, ThumbsUp, ThumbsDown } from 'lucide-react';
-
 import Popup from '../Popup/Popup';
+import JokeInteract from '../JokeInteract/JokeInteract';
 
-export default function JokeTemplate({ randomjoke, showLikeButton, toggleFavorite, likeJoke }) {
+export default function JokeTemplate({ randomjoke, showLikeButton, toggleFavorite, likeJoke, sendRaiting }) {
     const [showPopup, setShowPopup] = React.useState(false);
 
     const handleOverlayClick = () => {
@@ -32,33 +31,13 @@ export default function JokeTemplate({ randomjoke, showLikeButton, toggleFavorit
                 )}
 
                 {showLikeButton && (
-                    <div className="flex justify-between">
-                        <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
-                            <Star
-                                color="#EDF26D"
-                                fill={likeJoke ? '#EDF26D' : 'none'}
-                                className="cursor-pointer"
-                                onClick={() => toggleFavorite(randomjoke)}
-                            />
-                        </div>
-                        <div className="flex gap-3 items-center justify-center">
-                            <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
-                                <ThumbsUp color="white" className="cursor-pointer" />
-                            </div>
-                            <p>{randomjoke?.raiting || 0}</p>
-                            <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
-                                <ThumbsDown color="white" className="cursor-pointer" />
-                            </div>
-                        </div>
-                        <div
-                            className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[75px] h-[30px] sm:w-[80px] md:w-[85px] lg:w-[90px] xl:w-[100px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[10px] gap-1 cursor-pointer"
-                            onClick={() => setShowPopup(true)}>
-                            <Forward color="white" />
-                            <h2 className="text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] xl:text-[20px] text-white">
-                                Share
-                            </h2>
-                        </div>
-                    </div>
+                    <JokeInteract
+                        likeJoke={likeJoke}
+                        toggleFavorite={toggleFavorite}
+                        setShowPopup={setShowPopup}
+                        sendRaiting={sendRaiting}
+                        randomjoke={randomjoke}
+                    />
                 )}
             </div>
             {showPopup && (

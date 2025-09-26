@@ -94,6 +94,29 @@ export default function MainPage() {
         });
     }
 
+    async function sendRaiting(jokeId, rating) {
+        try {
+            console.log(jokeId, rating);
+
+            // const response = await fetch(`${API_URL}/jokes/vote/${jokeId}`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ rating }),
+            // });
+
+            // if (!response.ok) {
+            //     throw new Error(`HTTP error! Status: ${response.status}`);
+            // }
+
+            // const data = await response.json();
+            // console.log('Raiting response:', data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     //
 
     //^ side effects
@@ -158,6 +181,7 @@ export default function MainPage() {
                 likeJoke={likeJoke}
                 toggleFavorite={toggleFavorite}
                 showLikeButton={showLikeButton}
+                sendRaiting={sendRaiting}
             />
 
             <Button
