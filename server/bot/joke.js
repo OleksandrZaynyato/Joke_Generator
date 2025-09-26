@@ -12,7 +12,7 @@ bot.onText(/\/start/, (msg) => {
 });
 
 
-// app.post('/api/jokes', async (req, res) => {
+// app.post('/api/joke', async (req, res) => {
 //   try {
 //     const { text, submittedBy } = req.body;
 
@@ -77,7 +77,7 @@ bot.on('callback_query', async (callbackQuery) => {
 //       document.getElementById('jokeForm').addEventListener('submit', async (e) => {
 //         e.preventDefault();
 //         const formData = new FormData(e.target);
-//         const response = await fetch('/api/jokes', {
+//         const response = await fetch('/api/joke', {
 //           method: 'POST',
 //           headers: { 'Content-Type': 'application/json' },
 //           body: JSON.stringify({
