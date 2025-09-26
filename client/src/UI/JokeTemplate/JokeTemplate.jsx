@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Star, Forward } from 'lucide-react';
+import { Star, Forward, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 import Popup from '../Popup/Popup';
 
@@ -40,6 +40,15 @@ export default function JokeTemplate({ randomjoke, showLikeButton, toggleFavorit
                                 className="cursor-pointer"
                                 onClick={() => toggleFavorite(randomjoke)}
                             />
+                        </div>
+                        <div className="flex gap-3 items-center justify-center">
+                            <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
+                                <ThumbsUp color="white" className="cursor-pointer" />
+                            </div>
+                            <p>{randomjoke?.raiting || 0}</p>
+                            <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
+                                <ThumbsDown color="white" className="cursor-pointer" />
+                            </div>
                         </div>
                         <div
                             className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[75px] h-[30px] sm:w-[80px] md:w-[85px] lg:w-[90px] xl:w-[100px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[10px] gap-1 cursor-pointer"

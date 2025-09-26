@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
@@ -50,11 +51,8 @@ export default function MainPage() {
         setLikeJoke((prev) => !prev);
     }
 
-    async function handleLogout() {
+    async function logout() {
         try {
-            const confirmLogout = window.confirm('Confirm logout?');
-            if (!confirmLogout) return;
-
             const response = await fetch(`${API_URL}/user/logout`, {
                 method: 'POST',
                 credentials: 'include',
@@ -71,6 +69,29 @@ export default function MainPage() {
             console.error('Logout failed:', error);
             alert('Не вдалося вийти. Спробуйте ще раз.');
         }
+    }
+
+    function handleLogout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to logout!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!',
+            theme: 'dark',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+                Swal.fire({
+                    title: 'Logout successful!',
+                    text: 'You have been logged out.',
+                    icon: 'success',
+                    theme: 'dark',
+                });
+            }
+        });
     }
 
     //

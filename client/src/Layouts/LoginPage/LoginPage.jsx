@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, Mail, LockKeyhole } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
@@ -37,6 +38,12 @@ export default function LoginPage() {
                 setUser(data.user);
                 setUserNameOrEmail('');
                 setPassword('');
+                Swal.fire({
+                    title: 'Login successful!',
+                    text: 'Thank you for logging in!',
+                    icon: 'success',
+                    theme: 'dark',
+                });
 
                 navigate('/');
             }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Mail, LockKeyhole } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
@@ -40,6 +41,12 @@ export default function RegisterPage() {
                 setUserName('');
                 setEmail('');
                 setPassword('');
+                Swal.fire({
+                    title: 'Registration successful!',
+                    text: 'Please log in now!',
+                    icon: 'success',
+                    theme: 'dark',
+                });
 
                 navigate('/login');
             }
