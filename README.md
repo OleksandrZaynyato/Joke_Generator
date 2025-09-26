@@ -86,10 +86,17 @@ npm install
 3. Налаштувати .env файл для бекенду:
 
 MONGO_URI=your_mongodb_connection_string
-TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-ADMIN_PASSWORD=your_admin_password
+TOKENBOT=your_telegram_bot_token
+ADMIN_CHAT_ID=your_admin_password
+JWT_SECRET=your_jwt_secret
+API_URL=http://your_domain:port/api
+PORT=server_port
 
-4. Запуск проекту:
+3. Налаштувати .env файл для фронтенду:
+
+VITE_API_URL=http://your_domain:port/api
+
+5. Запуск проекту:
 
 # Запуск фронтенду
 npm run dev
