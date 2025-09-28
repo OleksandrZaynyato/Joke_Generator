@@ -5,19 +5,38 @@ import Button from '../../UI/Button/Button';
 
 import { Link } from 'react-router-dom';
 
-export default function FavoritesJokes() {
-    const [favoriteJokes, setFavoriteJokes] = React.useState(() => {
-        const saved = localStorage.getItem('favoriteJokes');
-        return saved ? JSON.parse(saved) : [];
-    });
+import { useNavigate } from 'react-router-dom';
 
-    console.log(favoriteJokes);
+export default function TopJokes() {
+    const navigate = useNavigate();
+
+    const [topJokes, setTopJokes] = React.useState([]);
+
+    async function getTopJokes() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/jokes/top`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            setTopJokes(data);
+            console.log('Top Jokes:', data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    React.useEffect(() => {
+        getTopJokes();
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
             <div className="w-full flex items-center justify-between flex-col pt-10">
                 <div className="flex flex-col items-center gap-3">
-                    <h2 className="text-[28px] font-bold text-white mx-auto">Favorites Jokes</h2>
+                    <h2 className="text-[28px] font-bold text-white mx-auto">Top 10 Jokes</h2>
                     <Link to={'/'}>
                         <Button bg={'bg-[#BFAFF2]'}>Back</Button>
                     </Link>
@@ -25,8 +44,15 @@ export default function FavoritesJokes() {
                 <Line />
             </div>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-15 justify-items-center">
-                {favoriteJokes.map((joke) => (
-                    <div key={joke._id} className="flex flex-col items-center gap-4">
+                {topJokes.map((joke) => (
+                    <div
+                        key={joke._id}
+                        className={`flex flex-col items-center gap-4 ${
+                            topJokes.indexOf(joke) === 0 ? 'col-span-1 xl:col-span-2' : ''
+                        }`}>
+                        <p className={`${topJokes.indexOf(joke) + 1 == 1 ? 'text-[#F8D57E]' : 'text-white'} text-2xl `}>
+                            #{topJokes.indexOf(joke) + 1} {topJokes.indexOf(joke) + 1 == 1 && ' - best joke🥇'}
+                        </p>
                         <div className="bg-[#313131] w-[300px] sm:min-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[300px] rounded-[20px] px-[26px] py-[18px] flex flex-col h-full">
                             <p
                                 className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] xl:text-[28px] text-white flex  gap-[10px]"
@@ -42,15 +68,8 @@ export default function FavoritesJokes() {
                             </p>
                         </div>
 
-                        <Button
-                            bg={'bg-[#F2AFB0]'}
-                            width={'w-[100%]'}
-                            onClick={() => {
-                                const updated = favoriteJokes.filter((item) => item._id !== joke._id);
-                                setFavoriteJokes(updated);
-                                localStorage.setItem('favoriteJokes', JSON.stringify(updated));
-                            }}>
-                            Remove
+                        <Button bg={'bg-[#A8F38D]'} width={'w-[100%]'} onClick={() => navigate(`/${joke._id}`)}>
+                            Show
                         </Button>
                     </div>
                 ))}
