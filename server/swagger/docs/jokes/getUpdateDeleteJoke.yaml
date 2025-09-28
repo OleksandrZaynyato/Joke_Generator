@@ -1,0 +1,150 @@
+paths:
+  /api/jokes/{id}:
+    get:
+      summary: Get a joke by ID
+      description: Retrieve a specific joke by its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the joke to be retrieved.
+          schema:
+            type: string
+            example: "68ca803a1489a10c7d036a7e"
+      responses:
+        '200':
+          description: A joke object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+                  setup:
+                    type: string
+                    example: "Why don't scientists trust atoms?"
+                  punchline:
+                    type: string
+                    example: "Because they make up everything!"
+                  rating:
+                    type: integer
+                    example: 5
+                  accepted:
+                    type: boolean
+                    example: true
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  createdBy:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+        '404':
+          description: Joke not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Joke not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+    delete:
+      summary: Delete a joke by ID
+      description: Remove a specific joke from the collection by its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the joke to be deleted.
+          schema:
+            type: string
+            example: "68ca803a1489a10c7d036a7e"
+      responses:
+        '200':
+          description: Joke deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Joke deleted successfully"
+    put:
+      summary: Update a joke by ID
+      description: Update the details of a specific joke by its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the joke to be updated.
+          schema:
+            type: string
+            example: "68ca803a1489a10c7d036a7e"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                setup:
+                  type: string
+                  example: "Why don't scientists trust atoms?"
+                punchline:
+                  type: string
+                  example: "Because they make up everything!"
+                accepted:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Joke updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+                  setup:
+                    type: string
+                    example: "Why don't scientists trust atoms?"
+                  punchline:
+                    type: string
+                    example: "Because they make up everything!"
+                  rating:
+                    type: integer
+                    example: 5
+                  accepted:
+                    type: boolean
+                    example: true
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-02T12:00:00Z"
+                  createdBy:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"

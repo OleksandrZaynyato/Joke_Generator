@@ -1,11 +1,30 @@
 paths:
-  /api/jokes/random:
-    get:
-      summary: Get a random joke
-      description: Retrieve a random joke from the collection.
+  /api/joke/{id}/vote:
+    post:
+      summary: Vote on a joke
+      description: Cast an upvote or downvote on a specific joke by its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the joke to be voted on.
+          schema:
+            type: string
+            example: "68ca803a1489a10c7d036a7e"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: ["like", "dislike"]
+                  example: "like"
       responses:
         '200':
-          description: A random joke
+          description: Vote recorded successfully
           content:
             application/json:
               schema:
@@ -33,27 +52,7 @@ paths:
                   updatedAt:
                     type: string
                     format: date-time
-                    example: "2023-10-01T12:00:00Z"
+                    example: "2023-10-02T12:00:00Z"
                   createdBy:
                     type: string
                     example: "68ca803a1489a10c7d036a7e"
-        '404':
-          description: No jokes found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "No accepted joke found"
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal server error"
