@@ -1,7 +1,13 @@
 import React from 'react';
 import { Star, Forward, ThumbsUp, ThumbsDown } from 'lucide-react';
 
+import { useAuthStore } from '../../Store/useAuthStore';
+
 export default function JokeInteract({ likeJoke, toggleFavorite, setShowPopup, sendRaiting, randomjoke }) {
+    const [localDelta, setLocalDelta] = React.useState(0);
+
+    const { user } = useAuthStore();
+
     const [voteMap, setVoteMap] = React.useState(() => JSON.parse(localStorage.getItem('voteMap') || '{}'));
     const vote = randomjoke ? voteMap[randomjoke._id] : null;
 
@@ -12,13 +18,25 @@ export default function JokeInteract({ likeJoke, toggleFavorite, setShowPopup, s
     const handleVote = (type) => {
         if (!randomjoke) return;
 
-        setVoteMap((prev) => {
-            const current = prev[randomjoke._id];
-            const newVote = current === type ? undefined : type;
-            return { ...prev, [randomjoke._id]: newVote };
-        });
+        const current = voteMap[randomjoke._id]; // поточний стан
+        let delta = 0;
 
-        sendRaiting(randomjoke._id, { vote: type });
+        if (!current) {
+            delta = type === 'like' ? 1 : -1;
+        } else if (current === type) {
+            delta = type === 'like' ? -1 : 1;
+        } else {
+            delta = type === 'like' ? 2 : -2;
+        }
+
+        setVoteMap((prev) => ({
+            ...prev,
+            [randomjoke._id]: current === type ? undefined : type,
+        }));
+
+        setLocalDelta((prev) => prev + delta); // викликаємо окремо один раз
+
+        sendRaiting(randomjoke._id, user.id, { action: type });
     };
 
     if (!randomjoke) return <p>Loading...</p>;
@@ -43,7 +61,7 @@ export default function JokeInteract({ likeJoke, toggleFavorite, setShowPopup, s
                         onClick={() => handleVote('like')}
                     />
                 </div>
-                <p className="text-white text-[20px]">Rating: {randomjoke?.raiting || 0}</p>
+                <p className="text-white text-[20px]">Rating: {(randomjoke.rating || 0) + localDelta}</p>
                 <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
                     <ThumbsDown
                         color="white"
