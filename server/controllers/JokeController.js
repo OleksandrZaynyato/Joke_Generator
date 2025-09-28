@@ -4,7 +4,7 @@ import {
     getJokeByIdService,
     createJokeService,
     updateJokeService,
-    deleteJokeService, voteJokeService,
+    deleteJokeService, voteJokeService, getTopJokesService,
 } from "../services/jokeService.js";
 import { getBot } from "../bot/bot.js";
 
@@ -122,6 +122,17 @@ export async function voteJoke(req, res) {
         const result = await voteJokeService(jokeId, userId, action, ip);
 
         res.json({ message: 'Joke rated successfully', joke: result.joke, jokeLike: result.jokeLike });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+// Топ жартів
+export async function getTopJokes(req, res) {
+    try {
+        const limit = parseInt(req.query.limit) || 10;
+        const jokes = await getTopJokesService(limit);
+        res.json(jokes);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

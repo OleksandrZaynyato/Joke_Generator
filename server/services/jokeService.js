@@ -89,3 +89,11 @@ export async function voteJokeService(jokeId, userId, action, ip) {
 
     return { message: `Joke was ${action}d successfully.`, joke, jokeVote: newVote };
 }
+
+
+export async function getTopJokesService(limit = 10) {
+    const jokes = await Joke.find({ accepted: true })
+        .sort({ rating: -1 })
+        .limit(limit);
+    return jokes;
+}
