@@ -1,7 +1,7 @@
 import yup from "yup";
 import mongoose from "mongoose";
 
-export const jokeUpdateLikeSchema = yup.object().shape({
+export const jokeVoteSchema = yup.object().shape({
     params: yup.object({
         id: yup.string()
             .required("id is required")
