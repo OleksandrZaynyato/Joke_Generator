@@ -56,7 +56,6 @@ export const login = async (req, res) => {
     }
 };
 
-
 export const logout = (req, res) => {
     res.clearCookie('token', {
         httpOnly: true,
@@ -142,3 +141,20 @@ export const updateUser = async (req, res) => {
     }
 }
 
+export const updateFavorites = async (req, res) => {
+    try {
+        const { userId, jokeId } = req.body;
+        const user = await getUserByIdRep(userId);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        const isFavorite = user.favorites.includes(jokeId);
+        if (isFavorite) {
+            user.favorites = user.favorites.filter(id => id.toString() !== jokeId);
+        } else {
+            user.favorites.push(jokeId);
+        }
+        await user.save();
+        res.status(200).json({ message: isFavorite ? 'Removed from favorites' : 'Added to favorites', favorites: user.favorites });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}

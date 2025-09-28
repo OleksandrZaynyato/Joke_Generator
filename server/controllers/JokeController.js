@@ -24,6 +24,7 @@ export async function getAllJokes(req, res) {
         }));
 
         res.header("X-Total-Count", jokes.length.toString());
+        res.set("Access-Control-Expose-Headers", "X-Total-Count");
         res.json(formattedJokes);
     } catch (error) {
         res.status(500).json({ message: error.message });
