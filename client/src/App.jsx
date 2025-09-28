@@ -4,6 +4,7 @@ import AddMyJoke from './Layouts/AddMyJoke/AddMyJoke';
 import FavoritesJokes from './Layouts/FavoritesJokes/FavoritesJokes';
 import RegisterPage from './Layouts/RegisterPage/RegisterPage.jsx';
 import LoginPage from './Layouts/LoginPage/LoginPage.jsx';
+import TopJokes from './Layouts/TopJokes/TopJokes.jsx';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/favorites" element={<FavoritesJokes />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/top" element={<TopJokes />} />
                 </Routes>
             </BrowserRouter>
         </>
