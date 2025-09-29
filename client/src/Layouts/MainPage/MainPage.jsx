@@ -1,14 +1,18 @@
+// src/Layouts/MainPage/MainPage.jsx
 import React, { useState, useEffect } from 'react';
-import { Star } from 'lucide-react';
-import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
-
+import { useTelegram } from './hooks/useTelegram';
+import { UserWelcome } from '../../admin/components/UserWelcome';      
+import { JokeDisplay } from '../../admin/components/JokeDisplay';        
+import { NavigationButtons } from '../../admin/components/NavigationButtons'; 
 export default function MainPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const { tg, user } = useTelegram();
 
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -19,59 +23,8 @@ export default function MainPage() {
     });
     const [likeJoke, setLikeJoke] = useState(false);
     const [showLikeButton, setShowLikeButton] = useState(false);
-    const [user, setUser] = useState(null);
-    const [tg, setTg] = useState(null);
 
-    const ADMIN_IDS = [1795893529, 1188397898, 1506727765];
-
-    // Функція для відкриття адмінки
-    const openAdminPanel = () => {
-        navigate('/admin');
-    };
-
-    useEffect(() => {
-        const initTelegram = () => {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const telegramApp = window.Telegram.WebApp;
-                setTg(telegramApp);
-
-                telegramApp.expand();
-
-                const userData = telegramApp.initDataUnsafe?.user;
-                if (userData) {
-                    const isAdmin = ADMIN_IDS.includes(userData.id);
-                    const userRole = isAdmin ? 'admin' : 'user';
-
-                    setUser({
-                        telegramId: userData.id,
-                        firstName: userData.first_name,
-                        lastName: userData.last_name || '',
-                        username: userData.username || '',
-                        role: userRole
-                    });
-
-                    localStorage.setItem('telegramUser', JSON.stringify({
-                        telegramId: userData.id,
-                        firstName: userData.first_name,
-                        lastName: userData.last_name || '',
-                        username: userData.username || '',
-                        role: userRole
-                    }));
-                }
-            }
-        };
-
-        if (!window.Telegram) {
-            const script = document.createElement('script');
-            script.src = 'https://telegram.org/js/telegram-web-app.js';
-            script.async = true;
-            script.onload = initTelegram;
-            document.head.appendChild(script);
-        } else {
-            initTelegram();
-        }
-    }, [navigate]);
-
+    // Обробка кнопки "Назад" в Telegram
     useEffect(() => {
         if (tg && tg.BackButton) {
             const handleBackButton = () => {
@@ -124,16 +77,22 @@ export default function MainPage() {
         }
     }
 
-    function toggleFavorite(joke) {
-        if (!joke || !joke._id) return;
+    function toggleFavorite() {
+        if (!randomjoke || !randomjoke._id) return;
 
         setFavoriteJokes((prev) => {
-            const exists = prev?.find((j) => j?._id === joke._id);
-            const updated = exists ? prev?.filter((j) => j?._id !== joke._id) : [...(prev || []), joke];
+            const exists = prev?.find((j) => j?._id === randomjoke._id);
+            const updated = exists 
+                ? prev?.filter((j) => j?._id !== randomjoke._id) 
+                : [...(prev || []), randomjoke];
             return updated || [];
         });
         setLikeJoke((prev) => !prev);
     }
+
+    const openAdminPanel = () => {
+        navigate('/admin');
+    };
 
     useEffect(() => {
         localStorage.setItem('favoriteJokes', JSON.stringify(favoriteJokes || []));
@@ -151,46 +110,19 @@ export default function MainPage() {
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B] p-4">
             <Line />
-
-            {user && (
-                <div className="text-white text-lg">
-                    Welcome, {user.firstName}! {user.role === 'admin' && '👑'}
-                </div>
-            )}
-
+            
+            <UserWelcome user={user} />
+            
             <h1 className="text-[30px] sm:text-[40px] md:text-[50px] lg:text-[60px] font-bold text-white text-center">
                 Jokes Generator
             </h1>
 
-            <div className="bg-[#313131] w-full max-w-[500px] min-h-[260px] rounded-[20px] px-[26px] py-[18px] flex flex-col justify-between gap-[20px]">
-                {randomjoke ? (
-                    <div className="flex flex-col gap-4">
-                        <p className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] text-white flex gap-[10px] break-words">
-                            <span className="min-w-[12px] h-[12px] bg-white rounded-full inline-block mt-2 flex-shrink-0"></span>
-                            {randomjoke.setup}
-                        </p>
-                        <p className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] text-[#F8D57E] flex gap-[10px]">
-                            <span className="min-w-[12px] h-[12px] bg-[#F8D57E] rounded-full inline-block mt-2 flex-shrink-0"></span>
-                            {randomjoke.punchline}
-                        </p>
-                    </div>
-                ) : (
-                    <p className="text-[28px] text-white opacity-40 text-center">Loading joke...</p>
-                )}
-
-                {showLikeButton && randomjoke && (
-                    <div className="flex justify-center">
-                        <div className="bg-[#2b2b2b] p-3 rounded-full cursor-pointer hover:scale-110 transition-transform">
-                            <Star
-                                size={32}
-                                color="#EDF26D"
-                                fill={likeJoke ? '#EDF26D' : 'none'}
-                                onClick={() => toggleFavorite(randomjoke)}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
+            <JokeDisplay
+                randomjoke={randomjoke}
+                likeJoke={likeJoke}
+                showLikeButton={showLikeButton}
+                onToggleFavorite={toggleFavorite}
+            />
 
             <Button
                 bg="bg-[#F8D57E] hover:bg-[#E8C56E]"
@@ -202,24 +134,12 @@ export default function MainPage() {
                 Generate New Joke
             </Button>
 
-            <div className="flex gap-[30px] sm:flex-row flex-col">
-                <Link to="/add-joke" className="no-underline">
-                    <Button bg="bg-[#BFAFF2] hover:bg-[#AF9FE2]">Add my Joke</Button>
-                </Link>
-                <Link to={'/favorites'} className="no-underline">
-                    <Button bg="bg-[#A8F38D] hover:bg-[#98E37D]">Favorites ({favoriteJokes?.length || 0})</Button>
-                </Link>
-
-                {user?.role === 'admin' && (
-                    <button
-                        onClick={openAdminPanel}
-                        className="no-underline"
-                    >
-                        <Button bg="bg-red-500 hover:bg-red-400">Admin Panel 👑</Button>
-                    </button>
-                )}
-            </div>
-
+            <NavigationButtons
+                user={user}
+                favoriteJokes={favoriteJokes}
+                onAdminClick={openAdminPanel}
+            />
+            
             <Line />
         </div>
     );
