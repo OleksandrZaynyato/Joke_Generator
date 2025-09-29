@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config();  // <-- першим рядком
+dotenv.config();  
 
 import express from 'express';
 import cors from 'cors';
@@ -22,6 +22,8 @@ app.use(cors({
     origin: [
         "http://localhost:5173",
         "https://joke-generator-nlfs.onrender.com",
+        "https://kv6dzwfj-5173.euw.devtunnels.ms",
+        "https://web.telegram.org",
         process.env.FRONTEND_URL || "http://localhost:5173"] }));
 
 app.use(express.json());
@@ -35,12 +37,12 @@ app.use('/api/user', userRoutes);
 
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
-app.get("*", (req, res) => {
+app.get((req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 // Init Telegram bot
-initBot();
+initBot(); 
 
 // Start server
 const PORT = process.env.PORT || 3000;
