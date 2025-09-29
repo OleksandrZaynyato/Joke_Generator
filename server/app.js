@@ -6,7 +6,8 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { swaggerUi, swaggerDocument } from './swagger/swagger.js';
-import passport from "passport";
+import passport from "./config/passport.js";
+// import "./config/passport.js";
 
 import { connectDB } from './config/DB.js';
 import jokeRoutes from './routes/jokeRoutes.js';
@@ -52,7 +53,13 @@ app.get(/^(?!\/api).*/, (req, res) => {
 });
 
 // Init Telegram bot
-// initBot();
+initBot();
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: err.message });
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;

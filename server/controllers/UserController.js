@@ -7,6 +7,7 @@ import {
 } from "../services/user/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import {updateFavouritesRep} from "../services/user/updateFavouritesRep.js";
 
 export const register = async (req, res) => {
     try {
@@ -22,9 +23,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { username="", email="", password } = await req.body;
+        const { loginValue, password } = await req.body;
 
-        const loginValue = email || username;
+        // const loginValue = email || username;
 
         const user = await getUserByEmailOrNameRep(loginValue);
         if (!user) return res.status(401).json({ error: 'Invalid email or password' });
@@ -33,7 +34,7 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
 
         const token = jwt.sign(
-            { id: user._id, role: user.role },
+            { sub: user._id, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -143,17 +144,11 @@ export const updateUser = async (req, res) => {
 
 export const updateFavorites = async (req, res) => {
     try {
-        const { userId, jokeId } = req.body;
-        const user = await getUserByIdRep(userId);
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        const isFavorite = user.favorites.includes(jokeId);
-        if (isFavorite) {
-            user.favorites = user.favorites.filter(id => id.toString() !== jokeId);
-        } else {
-            user.favorites.push(jokeId);
-        }
-        await user.save();
-        res.status(200).json({ message: isFavorite ? 'Removed from favorites' : 'Added to favorites', favorites: user.favorites });
+        const jokeId = req.params.id;
+        const userId = req.user.id;
+        const response = await updateFavouritesRep(userId, jokeId);
+
+        res.status(200).json({ message: response.massage, favorites: response.user.favorites });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
