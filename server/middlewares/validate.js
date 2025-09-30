@@ -9,8 +9,8 @@ export function validate(schema) {
             );
 
             if (validated.body) req.body = validated.body;
-            if (validated.params) req.params = validated.params;
-            if (validated.query) req.query = validated.query;
+            if (validated.params) Object.assign(req.params, validated.params);
+            if (validated.query) Object.assign(req.query, validated.query);
 
             next();
         } catch (err) {
