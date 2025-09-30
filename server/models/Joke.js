@@ -11,7 +11,7 @@ const jokeSchema = new mongoose.Schema(
             required: true,
         },
         rating: {
-          type: Number,
+            type: Number,
             default: 0,
         },
         accepted: {

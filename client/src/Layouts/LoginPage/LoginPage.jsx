@@ -18,7 +18,7 @@ export default function LoginPage() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: userNameOrEmail,
+                    loginValue: userNameOrEmail,
                     email: userNameOrEmail,
                     password,
                 }),
