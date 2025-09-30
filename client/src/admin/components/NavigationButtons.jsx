@@ -7,16 +7,17 @@ export const NavigationButtons = ({
     favoriteJokes, 
     onAdminClick 
 }) => {
+    console.log(user?.role);
     return (
         <div className="flex gap-[30px] sm:flex-row flex-col">
-            <Link to="/add-joke" className="no-underline">
+            {/* <Link to="/add-joke" className="no-underline">
                 <Button bg="bg-[#BFAFF2] hover:bg-[#AF9FE2]">Add my Joke</Button>
             </Link>
             <Link to={'/favorites'} className="no-underline">
                 <Button bg="bg-[#A8F38D] hover:bg-[#98E37D]">
                     Favorites ({favoriteJokes?.length || 0})
                 </Button>
-            </Link>
+            </Link> */}
 
             {user?.role === 'admin' && (
                 <button onClick={onAdminClick} className="no-underline">

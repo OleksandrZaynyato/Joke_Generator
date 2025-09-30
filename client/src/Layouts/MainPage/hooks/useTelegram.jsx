@@ -9,19 +9,26 @@ export const useTelegram = () => {
     const [tg, setTg] = useState(null);
     const [user, setUser] = useState(null);
 
+
+
+
     useEffect(() => {
+
         const initTelegram = () => {
+
             if (window.Telegram && window.Telegram.WebApp) {
                 const telegramApp = window.Telegram.WebApp;
                 setTg(telegramApp);
 
                 telegramApp.expand();
 
+
                 const userData = telegramApp.initDataUnsafe?.user;
+
                 if (userData) {
                     const isAdmin = ADMIN_IDS.includes(userData.id);
-                    const userRole = isAdmin ? 'admin' : 'user';
 
+                    const userRole = isAdmin ? 'admin' : 'user';
                     const userObj = {
                         telegramId: userData.id,
                         firstName: userData.first_name,
@@ -32,7 +39,11 @@ export const useTelegram = () => {
 
                     setUser(userObj);
                     localStorage.setItem('telegramUser', JSON.stringify(userObj));
+                } else {
+                    console.log('❌ useTelegram: No user data found in Telegram');
                 }
+            } else {
+                console.log('🔍 useTelegram: window.Telegram?.WebApp:', window.Telegram?.WebApp);
             }
         };
 
@@ -41,11 +52,16 @@ export const useTelegram = () => {
             script.src = 'https://telegram.org/js/telegram-web-app.js';
             script.async = true;
             script.onload = initTelegram;
+            script.onerror = () => {
+                console.log('❌ useTelegram: Failed to load Telegram script');
+            };
             document.head.appendChild(script);
         } else {
+            console.log('⚡ useTelegram: Telegram already loaded, initializing...');
             initTelegram();
         }
     }, [navigate]);
 
-    return { tg, user };
+    console.log('🔧 useTelegram: Returning - tg:', tg, 'user:', user);
+    return { tg, userName: user };
 };

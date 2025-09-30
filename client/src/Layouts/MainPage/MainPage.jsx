@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useLocation } from 'react-router-dom';
 
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 import JokeTemplate from '../../UI/JokeTemplate/JokeTemplate';
 import { useAuthStore } from '../../Store/useAuthStore';
-import { useTelegram } from './hooks/useTelegram';
-import { UserWelcome } from '../../admin/components/UserWelcome';      
-import { JokeDisplay } from '../../admin/components/JokeDisplay';        
-import { NavigationButtons } from '../../admin/components/NavigationButtons'; 
+import { useTelegram } from './hooks/useTelegram.jsx';
+import { UserWelcome } from '../../admin/components/UserWelcome';
+import { NavigationButtons } from '../../admin/components/NavigationButtons';
 export default function MainPage() {
-    //& constants
+    // constants
     const { setUser, user } = useAuthStore();
+    const log = (data) => {
+        document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    };
 
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const { tg, user } = useTelegram();
-
+    const { tg, userName } = useTelegram();
+    // log(userName);
     const API_URL = import.meta.env.VITE_API_URL;
 
     const [randomjoke, setRandomjoke] = useState(null);
@@ -87,8 +90,8 @@ export default function MainPage() {
 
         setFavoriteJokes((prev) => {
             const exists = prev?.find((j) => j?._id === randomjoke._id);
-            const updated = exists 
-                ? prev?.filter((j) => j?._id !== randomjoke._id) 
+            const updated = exists
+                ? prev?.filter((j) => j?._id !== randomjoke._id)
                 : [...(prev || []), randomjoke];
             return updated || [];
         });
@@ -138,7 +141,7 @@ export default function MainPage() {
         });
     }
 
-       const openAdminPanel = () => {
+    const openAdminPanel = () => {
         navigate('/admin');
     };
 
@@ -218,9 +221,9 @@ export default function MainPage() {
                 )}
             </div>
             <Line />
-            
-            <UserWelcome user={user} />
-            
+
+            <UserWelcome user={userName} />
+
             <h1 className="text-[30px] sm:text-[40px] md:text-[50px] lg:text-[60px] font-bold text-white text-center">
                 Jokes Generator
             </h1>
@@ -234,13 +237,12 @@ export default function MainPage() {
             />
 
             <Button
-                bg="bg-[#F8D57E] hover:bg-[#E8C56E]"
+                bg="bg-[#F8D57E]"
                 onClick={() => {
                     getRandomJoke();
                     setShowLikeButton(true);
-                }}
-            >
-                Generate New Joke
+                }}>
+                Generate
             </Button>
 
             <div className="flex gap-[30px] sm:flex-row flex-col">
@@ -255,11 +257,11 @@ export default function MainPage() {
                 </Link>
             </div>
             <NavigationButtons
-                user={user}
+                user={userName}
                 favoriteJokes={favoriteJokes}
                 onAdminClick={openAdminPanel}
             />
-            
+
             <Line />
         </div>
     );
