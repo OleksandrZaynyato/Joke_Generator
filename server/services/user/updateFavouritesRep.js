@@ -9,10 +9,10 @@ export async function updateFavouritesRep(userId, jokeId) {
 
         const index = user.favourites.findIndex(id => id.toString() === jokeId.toString());
         index === -1 ? user.favourites.push(jokeId) : user.favourites.splice(index, 1);
-        index === -1 ? message = 'Joke added to favourites' : message = 'Joke removed from favourites';
+        message = index === -1 ? 'Joke added to favourites' : 'Joke removed from favourites';
 
         await user.save();
-        return {user: user.toObject(), massage};
+        return {user: user.toObject(), message};
     }
     catch (error) {
         throw new Error(`Error updating favourites: ${error.message}`);

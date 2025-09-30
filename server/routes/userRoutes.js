@@ -7,7 +7,7 @@ import {
     getAllUsers,
     getUserById,
     getUserByEmailAndName,
-    updateUser, updateFavorites
+    updateUser, updateFavourites
 } from '../controllers/UserController.js';
 import {authAdmin} from "../middlewares/authAdmin.js";
 import passport from "../config/passport.js";
@@ -16,6 +16,7 @@ import {validate} from "../middlewares/validate.js";
 import {registerUserSchema} from "../validators/user/userRegisterValidator.js";
 import {userIdSchema} from "../validators/user/userIdValidator.js";
 import {userLoginSchema} from "../validators/user/userLoginValidator.js";
+import {userUpdateFavouritesSchema} from "../validators/user/userUpdateFavourites.js";
 
 const router = Router();
 
@@ -27,6 +28,6 @@ router.get('/users', getAllUsers);
 router.get('/:id', validate(userIdSchema), getUserById);
 router.post('/find', getUserByEmailAndName);
 router.put('/:id', passport.authenticate("jwt", { session: false }), authorizeRoles("admin"), updateUser);
-router.post('/favorite/:id', passport.authenticate("jwt", { session: false }), updateFavorites);
+router.post('/favorite/:id', passport.authenticate("jwt", { session: false }), validate(userUpdateFavouritesSchema), updateFavourites);
 
 export default router;

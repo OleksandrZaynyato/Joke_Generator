@@ -47,7 +47,7 @@ export const login = async (req, res) => {
 
         res.status(200).json({
             message: "Login successful",
-            user: { id: user._id, email: user.email, username: user.username, role: user.role },
+            user: { id: user._id, email: user.email, username: user.username, role: user.role, favourites: user.favourites },
             token: token
         });
 
@@ -142,13 +142,13 @@ export const updateUser = async (req, res) => {
     }
 }
 
-export const updateFavorites = async (req, res) => {
+export const updateFavourites = async (req, res) => {
     try {
         const jokeId = req.params.id;
         const userId = req.user.id;
         const response = await updateFavouritesRep(userId, jokeId);
 
-        res.status(200).json({ message: response.massage, favorites: response.user.favorites });
+        res.status(200).json({ message: response.message, favourites: response.user.favorites });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
