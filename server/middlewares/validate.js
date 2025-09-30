@@ -1,16 +1,16 @@
-import yup from 'yup';
+import * as yup from 'yup';
 
 export function validate(schema) {
     return async (req, res, next) => {
         try {
             const validated = await schema.validate(
                 { body: req.body, params: req.params, query: req.query },
-                { abortEarly: false, stripUnknown: true }
+                { abortEarly: false }
             );
 
             if (validated.body) req.body = validated.body;
-            if (validated.params) req.params = validated.params;
-            if (validated.query) req.query = validated.query;
+            if (validated.params) Object.assign(req.params, validated.params);
+            if (validated.query) Object.assign(req.query, validated.query);
 
             next();
         } catch (err) {
@@ -19,4 +19,3 @@ export function validate(schema) {
         }
     };
 }
-
