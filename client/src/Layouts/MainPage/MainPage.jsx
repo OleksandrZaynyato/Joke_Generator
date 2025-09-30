@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import Line from '../../UI/Line/Line';
 import Button from '../../UI/Button/Button';
 import JokeTemplate from '../../UI/JokeTemplate/JokeTemplate';
+import BurgerButton from '../../UI/BurgerButton/BurgerButton';
 import { useAuthStore } from '../../Store/useAuthStore';
 
 export default function MainPage() {
@@ -23,6 +24,8 @@ export default function MainPage() {
     });
     const [likeJoke, setLikeJoke] = React.useState(false);
     const [showLikeButton, setShowLikeButton] = React.useState(false);
+
+    const [width, setWidth] = React.useState(window.innerWidth);
 
     //
 
@@ -148,10 +151,21 @@ export default function MainPage() {
         }
     }, []);
 
+    React.useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+
+        window.addEventListener('resize', handleResize);
+
+        // при розмонтуванні компонента — відписуємось
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
             <div className="flex gap-[30px] items-center sm:flex-row flex-col absolute top-6 right-[10%]">
-                {user ? (
+                {width < 1024 ? (
+                    <BurgerButton handleLogout={handleLogout}></BurgerButton>
+                ) : user ? (
                     <>
                         <Button bg="bg-[#F8D57E]" onClick={handleLogout}>
                             Logout

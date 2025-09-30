@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^4.21.2",
+    "framer-motion": "^12.23.22",
     "jsonwebtoken": "^9.0.2",
     "lucide": "^0.544.0",
     "lucide-react": "^0.544.0",
@@ -31,9 +32,9 @@
     "swagger": "^0.7.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "sweetalert2": "^11.23.0",
     "tailwindcss": "^4.1.13",
     "yup": "^1.7.1",
-    "sweetalert2": "^11.23.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
