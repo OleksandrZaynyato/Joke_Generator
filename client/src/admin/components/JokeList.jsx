@@ -1,14 +1,51 @@
-import { List, Datagrid, TextField, NumberField, BooleanField, DateField } from 'react-admin';
+import { 
+    List, 
+    Datagrid, 
+    TextField, 
+    DateField,
+    Filter,
+    SelectInput,
+    FunctionField
+} from 'react-admin';
+
+// Простий фільтр
+const JokeFilter = (props) => (
+    <Filter {...props}>
+        <SelectInput
+            source="accepted"
+            choices={[
+                { id: 'all', name: 'Всі жарти' },
+                { id: 'true', name: 'Підтверджені' },
+                { id: 'false', name: 'Не підтверджені' },
+            ]}
+            defaultValue="all"
+        />
+    </Filter>
+);
 
 export const JokeList = (props) => (
-  <List {...props}>
-    <Datagrid>
-      <TextField source="id" label="ID" />
-      <TextField source="setup" label="Setup" />
-      <TextField source="punchline" label="Punchline" />
-      <BooleanField source="accepted" label="Accepted" />
-      <TextField source="submittedBy" label="Author" />
-      <DateField source="createdAt" label="Created" showTime />
-    </Datagrid>
-  </List>
+    <List 
+        {...props} 
+        filters={<JokeFilter />}
+        title="Жарти"
+    >
+        <Datagrid rowClick="edit">
+            <TextField source="id" label="ID" />
+            <TextField source="setup" label="Заголовок" />
+            <TextField source="punchline" label="Контент" />
+            <FunctionField
+                label="Статус"
+                render={record => (
+                    <span style={{
+                        color: record.accepted ? '#4CAF50' : '#f44336',
+                        fontWeight: 'bold'
+                    }}>
+                        {record.accepted ? '✅' : '❌'}
+                    </span>
+                )}
+            />
+            <TextField source="submittedBy" label="Автор" />
+            <DateField source="createdAt" label="Дата" showTime />
+        </Datagrid>
+    </List>
 );

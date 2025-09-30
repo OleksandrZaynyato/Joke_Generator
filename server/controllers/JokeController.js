@@ -18,9 +18,11 @@ export async function getAllJokes(req, res) {
             createdAt: joke.createdAt || new Date()
         }));
 
+        // ВИПРАВЛЕНО: використовуємо length без дужок та правильно встановлюємо заголовки
         res.header('X-Total-Count', jokes.length.toString());
+        res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+
         res.json(formattedJokes);
-        // res.json(jokes);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
