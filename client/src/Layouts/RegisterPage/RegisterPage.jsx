@@ -62,9 +62,11 @@ export default function RegisterPage() {
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
             <Line />
-            <h1 className="text-[60px] font-bold text-white">Registration</h1>
-            <div className="bg-[#313131] w-[25%] min-w-[410px] h-[300   px] rounded-[20px] flex flex-col items-center justify-center gap-[27px] px-[23px] py-[32px]">
-                <div className="bg-[#2B2B2B] w-full min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
+            <h1 className="text-[30px] sm:text-[40px] md:text-[50px] lg:text-[60px] font-bold text-white text-center">
+                Registration
+            </h1>
+            <div className="bg-[#313131] w-[25%] min-w-[320px] sm:min-w-[340px] md:min-w-[360px] lg:min-w-[380px] xl:min-w-[410px] h-[300   px] rounded-[20px] flex flex-col items-center justify-center gap-[27px] px-[23px] py-[32px]">
+                <div className="bg-[#2B2B2B] w-full min-w-[310px] sm:min-w-[335px] md:min-w-[350px] lg:min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
                     <User />
                     <input
                         type="text"
@@ -74,7 +76,7 @@ export default function RegisterPage() {
                         value={userName}
                     />
                 </div>
-                <div className="bg-[#2B2B2B] w-full min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
+                <div className="bg-[#2B2B2B] w-full min-w-[310px] sm:min-w-[335px] md:min-w-[350px] lg:min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
                     <Mail />
                     <input
                         type="text"
@@ -84,7 +86,7 @@ export default function RegisterPage() {
                         value={email}
                     />
                 </div>
-                <div className="bg-[#2B2B2B] w-full min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
+                <div className="bg-[#2B2B2B] w-full min-w-[310px] sm:min-w-[335px] md:min-w-[350px] lg:min-w-[365px] h-[60px] rounded-[16px] flex text-white items-center px-[20px] gap-2">
                     <LockKeyhole />
                     <input
                         type="password"

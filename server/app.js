@@ -7,7 +7,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { swaggerUi, swaggerDocument } from './swagger/swagger.js';
-import passport from "./config/passport.js";
+import passport from './config/passport.js';
 // import "./config/passport.js";
 
 import { connectDB } from './config/DB.js';
@@ -19,7 +19,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
 
 // Initialize passport
 app.use(passport.initialize());
@@ -46,12 +45,9 @@ await connectDB();
 app.use('/api/jokes', jokeRoutes);
 app.use('/api/user', userRoutes);
 
-app.get("/protected",
-    passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-        res.json({ message: "You are authorized", user: req.user });
-    }
-);
+app.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.json({ message: 'You are authorized', user: req.user });
+});
 
 // Swagger setup
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
