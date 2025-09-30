@@ -10,6 +10,7 @@ const User = new mongoose.Schema(
         firstName: String,
         lastName: String,
         role: { type: String, enum: ['user', 'admin'], default: 'user' },
+        favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Joke', default: [] }],
     },
     {
         collection: 'Users'

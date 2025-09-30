@@ -1,0 +1,59 @@
+paths:
+  /api/jokes/random:
+    get:
+      summary: Get a random joke
+      description: Retrieve a random joke from the collection.
+      responses:
+        '200':
+          description: A random joke
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+                  setup:
+                    type: string
+                    example: "Why don't scientists trust atoms?"
+                  punchline:
+                    type: string
+                    example: "Because they make up everything!"
+                  rating:
+                    type: integer
+                    example: 5
+                  accepted:
+                    type: boolean
+                    example: true
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  createdBy:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+        '404':
+          description: No jokes found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No accepted joke found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"

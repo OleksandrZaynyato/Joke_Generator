@@ -7,6 +7,7 @@ import {
 } from "../services/user/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import {updateFavouritesRep} from "../services/user/updateFavouritesRep.js";
 
 export const register = async (req, res) => {
     try {
@@ -22,9 +23,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { username="", email="", password } = await req.body;
+        const { loginValue, password } = await req.body;
 
-        const loginValue = email || username;
+        // const loginValue = email || username;
 
         const user = await getUserByEmailOrNameRep(loginValue);
         if (!user) return res.status(401).json({ error: 'Invalid email or password' });
@@ -33,7 +34,7 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
 
         const token = jwt.sign(
-            { id: user._id, role: user.role },
+            { sub: user._id, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -46,7 +47,7 @@ export const login = async (req, res) => {
 
         res.status(200).json({
             message: "Login successful",
-            user: { id: user._id, email: user.email, username: user.username, role: user.role },
+            user: { id: user._id, email: user.email, username: user.username, role: user.role, favourites: user.favourites },
             token: token
         });
 
@@ -55,7 +56,6 @@ export const login = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-
 
 export const logout = (req, res) => {
     res.clearCookie('token', {
@@ -142,3 +142,14 @@ export const updateUser = async (req, res) => {
     }
 }
 
+export const updateFavourites = async (req, res) => {
+    try {
+        const jokeId = req.params.id;
+        const userId = req.user.id;
+        const response = await updateFavouritesRep(userId, jokeId);
+
+        res.status(200).json({ message: response.message, favourites: response.user.favorites });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
