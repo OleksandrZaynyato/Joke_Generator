@@ -1,0 +1,29 @@
+1. Profile:
+    1. Add profile
+    2. Edit profile
+    3. Change password
+    4. Delete profile
+    5. Two-factor authentication
+    6. View profiles
+    7. Search profiles
+    8. Share profiles
+    9. Follow profiles
+    10.Get notifications about new posts of followed profiles
+    11. Block profiles
+    12. Report profiles
+2. Settings:
+    1. Theme selection
+    2. Language selection
+    3. Privacy settings
+    4. Notification settings
+3. Pages:
+    1. Help
+    2. About
+4. Admin:
+    1. User management
+    2. Content moderation
+    3. System settings
+    4. View logs
+    5. Activity monitoring
+    6. Data export options
+    7. Data import options

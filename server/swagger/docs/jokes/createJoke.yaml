@@ -1,0 +1,72 @@
+paths:
+  /api/jokes:
+    post:
+      summary: Create a new joke
+      description: Submit a new joke to the collection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                setup:
+                  type: string
+                  example: "Why don't scientists trust atoms?"
+                punchline:
+                  type: string
+                  example: "Because they make up everything!"
+      responses:
+        '201':
+          description: Joke created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+                  setup:
+                    type: string
+                    example: "Why don't scientists trust atoms?"
+                  punchline:
+                    type: string
+                    example: "Because they make up everything!"
+                  rating:
+                    type: integer
+                    example: 5
+                  accepted:
+                    type: boolean
+                    example: false
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  createdBy:
+                    type: string
+                    example: "68ca803a1489a10c7d036a7e"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid input data"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"

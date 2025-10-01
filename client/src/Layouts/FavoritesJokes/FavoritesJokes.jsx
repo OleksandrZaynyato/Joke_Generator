@@ -27,7 +27,7 @@ export default function FavoritesJokes() {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-15 justify-items-center">
                 {favoriteJokes.map((joke) => (
                     <div key={joke._id} className="flex flex-col items-center gap-4">
-                        <div className="bg-[#313131] w-[300px] sm:min-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[300px] rounded-[20px] px-[26px] py-[18px] flex flex-col">
+                        <div className="bg-[#313131] w-[300px] sm:min-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[300px] rounded-[20px] px-[26px] py-[18px] flex flex-col h-full">
                             <p
                                 className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] xl:text-[28px] text-white flex  gap-[10px]"
                                 id="setup">
