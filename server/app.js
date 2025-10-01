@@ -27,7 +27,7 @@ app.use(passport.initialize());
 // app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL && "http://localhost:5173" }));
 // For local development, you might want to allow all origins. Adjust in production.
 app.use(cors({ credentials: true, origin: true }));
-app.use(cors({ 
+app.use(cors({
     credentials: true,
     origin: [
         "http://localhost:5173",
