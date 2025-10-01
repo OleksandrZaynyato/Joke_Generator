@@ -61,7 +61,8 @@ export default function JokeInteract({ likeJoke, toggleFavorite, setShowPopup, s
                         onClick={() => handleVote('like')}
                     />
                 </div>
-                <p className="text-white text-[20px]">Rating: {(randomjoke.rating || 0) + localDelta}</p>
+                <p className="text-white text-[20px] display-none hidden md:block">Rating:</p>
+                <span className="text-white text-[17px] md:text-[20px]">{(randomjoke.rating || 0) + localDelta}</span>
                 <div className="flex justify-center items-center bg-[#2b2b2b] p-2 w-[30px] h-[30px] sm:w-[35px] md:w-[40px] lg:w-[45px] xl:w-[50px] sm:h-[35px] md:h-[40px] lg:h-[45px] xl:h-[50px] rounded-[20%]">
                     <ThumbsDown
                         color="white"
