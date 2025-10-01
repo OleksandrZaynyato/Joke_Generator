@@ -13,14 +13,14 @@ function App() {
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/:id" element={<MainPage />} />
-                    <Route path="/add-joke" element={<AddMyJoke />} />
                     <Route path="/admin/*" element={<AdminApp />} />
+                    <Route path="/add-joke" element={<AddMyJoke />} />
                     <Route path="/favorites" element={<FavoritesJokes />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/top" element={<TopJokes />} />
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/:id" element={<MainPage />} />
                 </Routes>
             </BrowserRouter>
         </>
