@@ -28,6 +28,6 @@ router.get('/users', getAllUsers);
 router.get('/:id', validate(userIdSchema), getUserById);
 router.post('/find', getUserByEmailAndName);
 router.put('/:id', passport.authenticate("jwt", { session: false }), authorizeRoles("admin"), updateUser);
-router.post('/favorite/:id', passport.authenticate("jwt", { session: false }), validate(userUpdateFavouritesSchema), updateFavourites);
+router.post('/favourite/:id', passport.authenticate("jwt", { session: false }), validate(userUpdateFavouritesSchema), updateFavourites);
 
 export default router;
