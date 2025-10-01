@@ -40,7 +40,7 @@ export const login = async (req, res) => {
         );
 
         res.cookie('token', token, {
-            httpOnly: true,
+            httpsOnly: true,
             sameSite: 'strict',
             maxAge: 3600000, // 1 година
         });
@@ -59,8 +59,8 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     res.clearCookie('token', {
-        httpOnly: true,
-        // secure: true, // Use only over HTTPS
+        httpsOnly: true,
+        secure: true, // Use only over HTTPS
         sameSite: 'strict',
     });
     res.status(200).json({ message: 'Logout successful' });
