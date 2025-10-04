@@ -1,7 +1,6 @@
 import dotenv from 'dotenv/config';
 // dotenv.config();
 
-
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -26,14 +25,18 @@ app.use(passport.initialize());
 // CORS
 // For local development, you might want to allow all origins. Adjust in production.
 // app.use(cors({ credentials: true, origin: true }));
-app.use(cors({
-    credentials: true,
-    origin: [
-        "http://localhost:5173",
-        "https://joke-generator-nlfs.onrender.com",
-        "https://kv6dzwfj-5173.euw.devtunnels.ms",
-        "https://web.telegram.org",
-        process.env.FRONTEND_URL || "http://localhost:5173"] }));
+app.use(
+    cors({
+        credentials: true,
+        origin: [
+            'http://localhost:5173',
+            'https://joke-generator-nlfs.onrender.com',
+            'https://kv6dzwfj-5173.euw.devtunnels.ms',
+            'https://web.telegram.org',
+            process.env.FRONTEND_URL || 'http://localhost:5173',
+        ],
+    })
+);
 
 app.use(express.json());
 
@@ -55,7 +58,6 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-
 });
 // Init Telegram bot
 initBot();
@@ -64,8 +66,6 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: err.message });
 });
-
-
 
 // Start server
 const PORT = process.env.PORT || 3000;

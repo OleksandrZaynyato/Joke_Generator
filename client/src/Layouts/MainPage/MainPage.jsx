@@ -12,11 +12,9 @@ import { useTelegram } from './hooks/useTelegram.jsx';
 import { UserWelcome } from '../../admin/components/UserWelcome';
 import { NavigationButtons } from '../../admin/components/NavigationButtons';
 export default function MainPage() {
-    // constants
+    //
+    //! constants
     const { setUser, user } = useAuthStore();
-    const log = (data) => {
-        document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-    };
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -54,6 +52,8 @@ export default function MainPage() {
             };
         }
     }, [tg, navigate, location.pathname]);
+
+    //
 
     //? functions
     async function getJokeById(jokeId) {
@@ -93,12 +93,11 @@ export default function MainPage() {
 
         setFavoriteJokes((prev) => {
             const exists = prev?.find((j) => j?._id === randomjoke._id);
-            const updated = exists
-                ? prev?.filter((j) => j?._id !== randomjoke._id)
-                : [...(prev || []), randomjoke];
+            const updated = exists ? prev?.filter((j) => j?._id !== randomjoke._id) : [...(prev || []), randomjoke];
             return updated || [];
         });
         setLikeJoke((prev) => !prev);
+        sendFavoriteJokes();
     }
 
     async function logout() {
@@ -118,6 +117,24 @@ export default function MainPage() {
         } catch (error) {
             console.error('Logout failed:', error);
             alert('Не вдалося вийти. Спробуйте ще раз.');
+        }
+    }
+    async function sendFavoriteJokes() {
+        try {
+            const response = await fetch(`${API_URL}/user/favourite/${id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Send favorite jokes failed:', error);
         }
     }
 
@@ -270,11 +287,7 @@ export default function MainPage() {
                     <Button bg="bg-[#AFD8F2]">Best Jokes</Button>
                 </Link>
             </div>
-            <NavigationButtons
-                user={userName}
-                favoriteJokes={favoriteJokes}
-                onAdminClick={openAdminPanel}
-            />
+            <NavigationButtons user={userName} favoriteJokes={favoriteJokes} onAdminClick={openAdminPanel} />
 
             <Line />
         </div>

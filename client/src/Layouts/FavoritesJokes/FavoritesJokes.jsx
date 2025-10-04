@@ -6,12 +6,54 @@ import Button from '../../UI/Button/Button';
 import { Link } from 'react-router-dom';
 
 export default function FavoritesJokes() {
-    const [favoriteJokes, setFavoriteJokes] = React.useState(() => {
-        const saved = localStorage.getItem('favoriteJokes');
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [favoriteJokes, setFavoriteJokes] = React.useState([]);
 
-    console.log(favoriteJokes);
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    async function getFavoriteJokes() {
+        try {
+            const response = await fetch(`${API_URL}/user/favourite`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setFavoriteJokes(data.favourites);
+        } catch (error) {
+            console.error('Fetch favorite jokes failed:', error);
+        }
+    }
+
+    async function updateFavouriteJokes(id) {
+        try {
+            const response = await fetch(`${API_URL}/user/favourite/${id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Send favorite jokes failed:', error);
+        }
+    }
+
+    React.useEffect(() => {
+        getFavoriteJokes();
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-between gap-[50px] min-h-screen bg-[#2B2B2B]">
@@ -44,11 +86,12 @@ export default function FavoritesJokes() {
 
                         <Button
                             bg={'bg-[#F2AFB0]'}
-                            width={'w-[100%]'}
+                            width={'min-w-full'}
                             onClick={() => {
                                 const updated = favoriteJokes.filter((item) => item._id !== joke._id);
                                 setFavoriteJokes(updated);
                                 localStorage.setItem('favoriteJokes', JSON.stringify(updated));
+                                updateFavouriteJokes(joke._id);
                             }}>
                             Remove
                         </Button>

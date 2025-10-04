@@ -2,12 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../UI/Button/Button';
 
-export const NavigationButtons = ({ 
-    user, 
-    favoriteJokes, 
-    onAdminClick 
-}) => {
-    console.log(user?.role);
+export const NavigationButtons = ({ user, favoriteJokes, onAdminClick }) => {
     return (
         <div className="flex gap-[30px] sm:flex-row flex-col">
             {/* <Link to="/add-joke" className="no-underline">
