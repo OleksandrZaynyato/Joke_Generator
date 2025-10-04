@@ -12,11 +12,9 @@ import { useTelegram } from './hooks/useTelegram.jsx';
 import { UserWelcome } from '../../admin/components/UserWelcome';
 import { NavigationButtons } from '../../admin/components/NavigationButtons';
 export default function MainPage() {
-    // constants
+    //
+    //! constants
     const { setUser, user } = useAuthStore();
-    const log = (data) => {
-        document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-    };
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -54,6 +52,8 @@ export default function MainPage() {
             };
         }
     }, [tg, navigate, location.pathname]);
+
+    //
 
     //? functions
     async function getJokeById(jokeId) {
@@ -121,7 +121,7 @@ export default function MainPage() {
     }
     async function sendFavoriteJokes() {
         try {
-            const response = await fetch(`${API_URL}/user/favorite/${id}`, {
+            const response = await fetch(`${API_URL}/user/favourite/${id}`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

@@ -28,7 +28,7 @@ export default function LoginPage() {
             if (!response.ok) {
                 Swal.fire({
                     title: `${data.message}!`,
-                    text: `${data.errors}!`,
+                    text: `${data.error}!`,
                     icon: 'error',
                     theme: 'dark',
                 });

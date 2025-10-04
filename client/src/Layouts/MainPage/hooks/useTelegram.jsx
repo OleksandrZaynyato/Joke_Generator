@@ -9,19 +9,13 @@ export const useTelegram = () => {
     const [tg, setTg] = useState(null);
     const [user, setUser] = useState(null);
 
-
-
-
     useEffect(() => {
-
         const initTelegram = () => {
-
             if (window.Telegram && window.Telegram.WebApp) {
                 const telegramApp = window.Telegram.WebApp;
                 setTg(telegramApp);
 
                 telegramApp.expand();
-
 
                 const userData = telegramApp.initDataUnsafe?.user;
 
@@ -34,13 +28,13 @@ export const useTelegram = () => {
                         firstName: userData.first_name,
                         lastName: userData.last_name || '',
                         username: userData.username || '',
-                        role: userRole
+                        role: userRole,
                     };
 
                     setUser(userObj);
                     localStorage.setItem('telegramUser', JSON.stringify(userObj));
                 } else {
-                    console.log('❌ useTelegram: No user data found in Telegram');
+                    // console.log('❌ useTelegram: No user data found in Telegram');
                 }
             } else {
                 console.log('🔍 useTelegram: window.Telegram?.WebApp:', window.Telegram?.WebApp);
@@ -57,11 +51,9 @@ export const useTelegram = () => {
             };
             document.head.appendChild(script);
         } else {
-            console.log('⚡ useTelegram: Telegram already loaded, initializing...');
             initTelegram();
         }
     }, [navigate]);
 
-    console.log('🔧 useTelegram: Returning - tg:', tg, 'user:', user);
     return { tg, userName: user };
 };

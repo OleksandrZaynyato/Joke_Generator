@@ -34,7 +34,7 @@ export default function FavoritesJokes() {
 
     async function updateFavouriteJokes(id) {
         try {
-            const response = await fetch(`${API_URL}/user/favorite/${id}`, {
+            const response = await fetch(`${API_URL}/user/favourite/${id}`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
