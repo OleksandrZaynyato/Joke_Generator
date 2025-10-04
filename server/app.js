@@ -23,9 +23,20 @@ const app = express();
 app.use(passport.initialize());
 
 // CORS
-// app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL && "http://localhost:5173" }));
 // For local development, you might want to allow all origins. Adjust in production.
-app.use(cors({ credentials: true, origin: true }));
+// app.use(cors({ credentials: true, origin: true }));
+app.use(
+    cors({
+        credentials: true,
+        origin: [
+            'http://localhost:5173',
+            'https://joke-generator-nlfs.onrender.com',
+            'https://kv6dzwfj-5173.euw.devtunnels.ms',
+            'https://web.telegram.org',
+            process.env.FRONTEND_URL || 'http://localhost:5173',
+        ],
+    })
+);
 
 app.use(express.json());
 
@@ -48,7 +59,6 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
-
 // Init Telegram bot
 initBot();
 

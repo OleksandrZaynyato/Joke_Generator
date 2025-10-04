@@ -38,7 +38,7 @@ router.get('/:id', validate(userIdSchema), getUserById);
 router.post('/find', getUserByEmailAndName);
 router.put('/:id', passport.authenticate('jwt', { session: false }), authorizeRoles('admin'), updateUser);
 router.post(
-    '/favorite/:id',
+    '/favourite/:id',
     passport.authenticate('jwt', { session: false }),
     validate(userUpdateFavouritesSchema),
     updateFavourites
