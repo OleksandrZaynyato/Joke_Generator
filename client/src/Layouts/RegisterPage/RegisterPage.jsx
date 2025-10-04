@@ -27,13 +27,19 @@ export default function RegisterPage() {
                     password,
                 }),
             });
+            const data = await response.json();
 
             if (!response.ok) {
+                Swal.fire({
+                    title: `${data.message}!`,
+                    text: `${data.errors[0]}!`,
+                    icon: 'error',
+                    theme: 'dark',
+                });
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data = await response.json();
-            console.log('Login response:', data);
+            // console.log('Registration response:', data);
 
             if (data.user.id) {
                 localStorage.setItem('userId', data.user.id);

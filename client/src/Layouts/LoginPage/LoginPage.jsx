@@ -23,13 +23,19 @@ export default function LoginPage() {
                     password,
                 }),
             });
+            const data = await response.json();
 
             if (!response.ok) {
+                Swal.fire({
+                    title: `${data.message}!`,
+                    text: `${data.errors}!`,
+                    icon: 'error',
+                    theme: 'dark',
+                });
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data = await response.json();
-            console.log('Login response:', data);
+            // console.log('Login response:', data);
 
             if (data.token) {
                 localStorage.setItem('token', data.token);
