@@ -44,7 +44,7 @@ export const JokeList = (props) => (
                     </span>
                 )}
             />
-            <TextField source="submittedBy" label="Автор" />
+            <TextField source="createdBy" label="Автор" />
             <DateField source="createdAt" label="Дата" showTime />
         </Datagrid>
     </List>

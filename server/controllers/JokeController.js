@@ -60,8 +60,9 @@ export async function getJokeById(req, res) {
 // Створення жарту
 export async function createJoke(req, res) {
     try {
+        const userId = req.user.id
         const { setup, punchline } = req.body;
-        const newJoke = await createJokeService({ setup, punchline });
+        const newJoke = await createJokeService({ setup, punchline, createdBy: userId });
 
         const bot = await getBot();
         const adminChatId = process.env.ADMIN_CHAT_ID;
