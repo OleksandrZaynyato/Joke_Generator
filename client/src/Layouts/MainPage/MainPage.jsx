@@ -52,6 +52,7 @@ export default function MainPage() {
             return exists ? prev.filter((j) => j._id !== joke._id) : [...prev, joke];
         });
         setLikeJoke((prev) => !prev);
+        sendFavoriteJokes();
     }
 
     async function logout() {
@@ -71,6 +72,24 @@ export default function MainPage() {
         } catch (error) {
             console.error('Logout failed:', error);
             alert('Не вдалося вийти. Спробуйте ще раз.');
+        }
+    }
+    async function sendFavoriteJokes() {
+        try {
+            const response = await fetch(`${API_URL}/user/favorite/${id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Send favorite jokes failed:', error);
         }
     }
 

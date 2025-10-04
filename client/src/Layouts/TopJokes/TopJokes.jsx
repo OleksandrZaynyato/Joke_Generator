@@ -68,7 +68,7 @@ export default function TopJokes() {
                             </p>
                         </div>
 
-                        <Button bg={'bg-[#A8F38D]'} width={'w-[100%]'} onClick={() => navigate(`/${joke._id}`)}>
+                        <Button bg={'bg-[#A8F38D]'} width={'min-w-[100%]'} onClick={() => navigate(`/${joke._id}`)}>
                             Show
                         </Button>
                     </div>

@@ -3,18 +3,20 @@ import {
     createUserRep,
     getAllUsersRep,
     getUserByEmailOrNameRep,
-    getUserByIdRep, updateUserRep
-} from "../services/user/index.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import {updateFavouritesRep} from "../services/user/updateFavouritesRep.js";
+    getUserByIdRep,
+    updateUserRep,
+} from '../services/user/index.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { updateFavouritesRep } from '../services/user/updateFavouritesRep.js';
+import User from '../models/User.js';
 
 export const register = async (req, res) => {
     try {
         const user = await createUserRep(req.body);
         res.status(201).json({
-            message: "User registered successfully",
-            user: { id: user._id, email: user.email, username: user.username, role: user.role }
+            message: 'User registered successfully',
+            user: { id: user._id, email: user.email, username: user.username, role: user.role },
         });
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -33,11 +35,7 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
 
-        const token = jwt.sign(
-            { sub: user._id, role: user.role },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" }
-        );
+        const token = jwt.sign({ sub: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -46,13 +44,18 @@ export const login = async (req, res) => {
         });
 
         res.status(200).json({
-            message: "Login successful",
-            user: { id: user._id, email: user.email, username: user.username, role: user.role, favourites: user.favourites },
-            token: token
+            message: 'Login successful',
+            user: {
+                id: user._id,
+                email: user.email,
+                username: user.username,
+                role: user.role,
+                favourites: user.favourites,
+            },
+            token: token,
         });
-
     } catch (err) {
-        console.error("Login error:", err);
+        console.error('Login error:', err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -70,8 +73,8 @@ export const registerAdmin = async (req, res) => {
     try {
         const admin = await createAdminRep(req.body);
         res.status(201).json({
-            message: "Admin registered successfully",
-            user: { id: admin._id, email: admin.email, username: admin.username, role: admin.role }
+            message: 'Admin registered successfully',
+            user: { id: admin._id, email: admin.email, username: admin.username, role: admin.role },
         });
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -89,7 +92,7 @@ export const getUserById = async (req, res) => {
             id: user._id,
             email: user.email,
             username: user.username,
-            role: user.role
+            role: user.role,
         };
         res.status(200).json({ safeUser });
     } catch (err) {
@@ -108,28 +111,28 @@ export const getUserByEmailAndName = async (req, res) => {
             id: user._id,
             email: user.email,
             username: user.username,
-            role: user.role
+            role: user.role,
         };
         res.status(200).json({ safeUser });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-}
+};
 
 export const getAllUsers = async (req, res) => {
     try {
         const users = await getAllUsersRep();
-        const safeUsers = users.map(user => ({
+        const safeUsers = users.map((user) => ({
             id: user._id,
             email: user.email,
             username: user.username,
-            role: user.role
+            role: user.role,
         }));
         res.status(200).json(safeUsers);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-}
+};
 
 export const updateUser = async (req, res) => {
     try {
@@ -140,7 +143,7 @@ export const updateUser = async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-}
+};
 
 export const updateFavourites = async (req, res) => {
     try {
@@ -152,4 +155,14 @@ export const updateFavourites = async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-}
+};
+
+export const getFavourites = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).populate('favourites'); // якщо у favourites зберігаються ObjectId
+        res.status(200).json({ favourites: user.favourites });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
